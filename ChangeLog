@@ -1,0 +1,9 @@
+2008-07-15 vs. 1.0.2 - Jose Claudio Faria  <joseclaudio.faria@gmail.com>
+
+	* Released to CRAN
+  * English corrections by Clarice
+  * Scripts with obj.identify=TRUE were removed from 'demo' folder
+	  
+2008-07-01  vs. 1.0.1 - Jose Claudio Faria  <joseclaudio.faria@gmail.com>
+
+	* Fisrt version restricted released (to testers only)
