@@ -1,4 +1,6 @@
-bp = bpca(rock, var.rb=TRUE, var.rd=TRUE)
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
+
+bp <- bpca(rock, var.rb=TRUE, var.rd=TRUE)
 summary(bp)
 
 # The total variance explained is satisfactory (>= .80)!
@@ -25,7 +27,7 @@ plot(qbpca(rock, bp))
 
 bp$eigenvectors
 
-bp1=bpca(rock, lambda.ini=3, lambda.end=4)
+bp1 <- bpca(rock, lambda.ini=3, lambda.end=4)
 summary(bp1)
 plot(bp1)
 
@@ -34,7 +36,7 @@ plot(bp1)
 # 1- Avoid to discut it;
 # 2- Consider to incorporate the information with a bpca.3d
 
-bp2 = bpca(rock, lambda.end=3, var.rb=TRUE, var.rd=TRUE)
+bp2 <- bpca(rock, lambda.end=3, var.rb=TRUE, var.rd=TRUE)
 summary(bp2)
 
 plot(bp2)                # Static
@@ -43,3 +45,6 @@ bp2$var.rd               # nice
 
 # Aditional diagnostic
 plot(qbpca(rock, bp2))
+
+devAskNewPage(oask)
+

@@ -48,15 +48,16 @@
     If \code{var.rd} is TRUE the \code{var.rb} parameter must be also TRUE.}
   \item{limit}{A vector giving the percentual limit to define poor
     representation of variables.}
-  \item{\dots}{Other graphical parameters may also be passed as arguments to
-    these functions.}
+  \item{\dots}{Aditional parameters. It is necessary to be S3 method.}
 }
 
 \details{
   The biplot is a multivariate method for graphing row and column elements using
   a single plot (Gabriel, 1971).
 
-  The biplot of a matrix $_{n}Y_{p}$ projects on the same plot: \emph{rows}
+  The biplot of a matrix
+  \deqn{_{n}Y_{p}}
+  projects on the same plot: \emph{rows}
   (associated with \emph{n} objects) and \emph{columns} (associated with
   \emph{p} variables), markers from data that forms a two-way table
   (\code{data.frame} or \code{matrix} object).
@@ -71,13 +72,16 @@
   The basic idea behind the biplot method was to add the information about the
   variables to the principal component graph (Johnson \& Wichern, 1988).
 
-  Considering the results of \deqn{svd(_{n}Y_{p})}
-  \item{\emph{d}:}{A vector containing the singular values of Y, of length
-    \code{min(n, p)};}
-  \item{\emph{u}:}{A matrix whose columns contain the left singular vectors of
-    Y, present if \code{nu > 0}. Dimension \code{c(n, nu)};}
-  \item{\emph{v}:}{A matrix whose columns contain the right singular vectors of
-    Y, present if \code{nv > 0}. Dimension \code{c(p, nv)}.}
+  Considering the results of
+  \deqn{svd(_{n}Y_{p})}
+  \itemize{
+    \item \emph{d}: A vector containing the singular values of Y, of length
+      \code{min(n, p)};
+    \item \emph{u}: A matrix whose columns contain the left singular vectors of
+      Y, present if \code{nu > 0}. Dimension \code{c(n, nu)};
+    \item \emph{v}: A matrix whose columns contain the right singular vectors of
+      Y, present if \code{nv > 0}. Dimension \code{c(p, nv)}.
+  }  
 
   and also,
   \deqn{s^2 = diag(d)}
@@ -88,29 +92,35 @@
 
   in various ways. The methods of factorization computed by the \code{bpca}
   function are:
+  \itemize{
+    \item \emph{HJ - simetric}, Galindo (1986):
+      \deqn{g = u*s^2}
+      \deqn{h = s^2*v'}
+    \item \emph{SQRT - squared root simetric}, Gabriel (1971):
+      \deqn{g = u*\sqrt{s^2}}
+      \deqn{h = \sqrt{s^2}*v'}
+    \item \emph{JK - row metric preserving}, Gabriel (1971):
+      \deqn{g = u*s^2}
+      \deqn{h = v'}
+    \item \emph{GH - column metric preserving}, Gabriel (1971):
+      \deqn{g = \sqrt{n-1}*u}
+      \deqn{h = \frac{1}{\sqrt{n-1}}*s^2*v'}
+  }  
 
-  \item \emph{HJ - simetric}, Galindo (1986):
-    \deqn{g = u*s^2}
-    \deqn{h = s^2*v'}
-  \item \emph{SQRT - squared root simetric}, Gabriel (1971):
-    \deqn{g = u*\sqrt{s^2}}
-    \deqn{h = \sqrt{s^2}*v'}
-  \item \emph{JK - row metric preserving}, Gabriel (1971):
-    \deqn{g = u*s^2}
-    \deqn{h = v'}
-  \item \emph{GH - column metric preserving}, Gabriel (1971):
-    \deqn{g = \sqrt{n-1}*u}
-    \deqn{h = \frac{1}{\sqrt{n-1}}*s^2*v'}
-
-  Considering $_{n}Y_{p} \approx Y_{m}$, it is possible to deduce that if the
-  rank (r) of the matrix $_{n}Y_{p}$ is bigger than `m', the biplot
+  Considering
+  \deqn{_{n}Y_{p} \approx Y_{m}}
+  it is possible to deduce that if the
+  rank (r) of the matrix
+  \deqn{_{n}Y_{p}}
+  is bigger than `m', the biplot
   representation of Y will be an approximation, and accurate only in the case
   of $r=m$.
 
   Due to the need of different methods of factorization, if \code{x} is a
   \code{prcomp} object, the method \code{bpca.prcomp} will go back from the
   \code{prcom} function. In other words, it will regenerates, or computes, the
-  inverse of the \code{svd} decomposition of the given data $_{n}Y_{p}$.
+  inverse of the \code{svd} decomposition of the given data
+  \deqn{_{n}Y_{p}}
   After this, it will make a call to the method \code{bpca.default} with the
   adequated parameters.
 
@@ -174,11 +184,11 @@
   ## Basic presentation and compararison with 'biplot' function ('stats' package)
   ##
 
-  library(bpca)
   # Opening e configuring a graphical device
   x11(w=8, h=4)
   op <- par(no.readonly=TRUE)
   par(mfrow=c(1, 2))
+  oask <- devAskNewPage(dev.interactive(orNone = TRUE))
 
   # Biplot of package stats (left) and bpca of package biplot (right)
   # variables in columns (represented as red vectors)
@@ -201,6 +211,7 @@
        var.factor=2, var.cex=1,
        obj.cex=1)
   par(op)
+  devAskNewPage(oask)
 
   # Summarizing bpca
   summary(bpca(caith, var.scale=FALSE))
@@ -214,7 +225,8 @@
 
   bp <- bpca(gabriel1971)
 
-  x11(w=5, h=5)
+  x11(w=6, h=6)
+  oask <- devAskNewPage(dev.interactive(orNone = TRUE))
   plot(bp, var.factor=2)
 
   # Exploring the object 'bp' created by the function 'bpca'
@@ -241,7 +253,6 @@
 
   bp <- bpca(gabriel1971, lambda.end=3)
 
-  x11(w=6, h=6)
   plot(bp, var.factor=3)
 
   # Exploring the object 'bp' created by the function 'bpca'
@@ -279,8 +290,6 @@
   ## Grouping objects with different symbols and colors - 2d and 3d
   ##
 
-  x11(w=6, h=6)
-
   # 2d
   plot(bpca(iris[-5]),
        var.factor=.3, var.cex=.7,
@@ -301,6 +310,8 @@
        obj.names=FALSE, obj.cex=.8,
        obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
        simple.axes=FALSE, box=TRUE)
+
+  devAskNewPage(oask)       
 }
 
 \keyword{multivariate}

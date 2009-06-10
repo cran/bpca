@@ -2,7 +2,8 @@
 ## Example of 'var.rb=TRUE' parameter as a measure of the quality of the biplot - 2d
 ##
 
-library(bpca)
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
+
 ## Differences between methods of factorization
 # SQRT
 bp1 <- bpca(gabriel1971, meth='sqrt', var.rb=TRUE)
@@ -23,3 +24,6 @@ plot(qbp3, main='gh - 2d \n (good)')
 bp4 <- bpca(gabriel1971, meth='hj', lambda.end=2, var.rb=TRUE)
 qbp4 <- qbpca(gabriel1971,  bp4)
 plot(qbp4, main='hj - 2d \n (good)')
+
+devAskNewPage(oask)
+

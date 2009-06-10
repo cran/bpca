@@ -2,10 +2,9 @@
 ## Computing and ploting a bpca object with 'scatterplot3d' package - 3d
 ##
 
-library(bpca)
-bp <- bpca(gabriel1971, lambda.end=3)
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
 
-x11(w=6, h=6)
+bp <- bpca(gabriel1971, lambda.end=3)
 plot(bp, var.factor=3)
 
 # Exploring the object 'bp' created by the function 'bpca'
@@ -31,3 +30,6 @@ plot(bpca(gabriel1971, lambda.end=3, meth='jk'),
      var.factor=6, var.pch='+', var.cex=.6, var.col='green4',
      obj.pch='*', obj.cex=.8, obj.col=1:8,
      ref.lty='solid', ref.col='red', angle=70)
+    
+devAskNewPage(oask)
+

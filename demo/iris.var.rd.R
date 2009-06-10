@@ -2,7 +2,8 @@
 ## Diagnostic of iris representation with 'var.rd' parameter - 2d and 3d
 ##
 
-library(bpca)
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
+
 bp1 <- bpca(iris[-5], var.rb=TRUE, var.rd=TRUE, limit=3)
 
 plot(bp1, var.factor=.3,
@@ -36,3 +37,6 @@ round(bp2$var.rb, 2)
 round(cor(iris[-5]), 2)
 
 # Good representation of all variables with a 3d biplot!
+
+devAskNewPage(oask)
+

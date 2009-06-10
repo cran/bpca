@@ -5,7 +5,6 @@
 ## p = columns (variables)
 ##
 
-library(bpca)
 dt <- dt.tools(iris[-5], 2)
 
 # Exploring the object 'bp' created by the function 'var.tools'

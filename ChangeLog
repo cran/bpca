@@ -1,3 +1,10 @@
+2009-06-10 vs. 1.0.3 - Jose Claudio Faria  <joseclaudio.faria@gmail.com>
+
+	* The methods plot.bpca.2d and plot.bpca.3d now allows to send the parameters:
+	  xlim, ylim, zlim, xlab, ylab and zlab
+	* The demos were a bit reworked
+	* The documentation in PDF was included in the package
+
 2008-07-15 vs. 1.0.2 - Jose Claudio Faria  <joseclaudio.faria@gmail.com>
 
 	* Released to CRAN

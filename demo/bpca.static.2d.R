@@ -2,10 +2,9 @@
 ## Computing and ploting a bpca object with 'graphics' package - 2d
 ##
 
-library(bpca)
-bp <- bpca(gabriel1971)
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
 
-x11(w=5, h=5)
+bp <- bpca(gabriel1971)
 plot(bp, var.factor=2)
 
 # Exploring the object 'bp' created by the function 'bpca'
@@ -30,3 +29,6 @@ plot(bpca(gabriel1971, meth='sqrt'),
      main='gabriel1971 - sqrt', sub='The graphical parameters are working fine!',
      var.factor=2, var.cex=.6, var.col=rainbow(9), var.pch='v',
      obj.pch='o', obj.cex=.5, obj.col=rainbow(8), obj.pos=1, obj.offset=.5)
+
+devAskNewPage(oask)
+

@@ -4,7 +4,8 @@ function(x, ref.lines=TRUE, ref.color='navy', ref.lty='dotted',
          var.factor=1, var.color='red3', var.lty='solid', var.pch=20,
          var.pos=4, var.cex=.6, var.offset=.2,
          obj.color='black', obj.pch=20, obj.pos=4, obj.cex=.6, obj.offset=.2,
-         obj.names=TRUE, obj.labels=rownames(x$coord$objects), obj.identify=FALSE, ...)
+         obj.names=TRUE, obj.labels=rownames(x$coord$objects), obj.identify=FALSE,
+         xlim, ylim, xlab, ylab, ...)
 {
   if (!inherits(x, 'bpca.2d'))
     stop("Use this function only with 'bpca.2d' class!")
@@ -14,17 +15,24 @@ function(x, ref.lines=TRUE, ref.color='navy', ref.lty='dotted',
                   rep(0,
                       ncol(x$coord$objects)))
 
-  ms  <- max(abs(scores)) * 1.2
-  msp <- c(-ms, ms)
+  if (missing(xlim) || missing(ylim)) {
+    ms  <- max(abs(scores)) * 1.2
+    msp <- c(-ms, ms)
+  }
+  if (missing(xlim))
+    xlim <- msp
+  if (missing(ylim))
+    ylim <- msp
+  if (missing(xlab))
+    xlab <- paste('PC', x$number[1], sep='')
+  if (missing(ylab))
+    ylab <- paste('PC', x$number[2], sep='')
+
   plot(scores,
-       xlim=msp,
-       ylim=msp,
-       xlab=paste('PC',
-                  x$number[1],
-                  sep=''),
-       ylab=paste('PC',
-                  x$number[2],
-                  sep=''),
+       xlim=xlim,
+       ylim=ylim,
+       xlab=xlab,
+       ylab=ylab,
        type='n', ...)
 
   if (ref.lines)
@@ -81,3 +89,4 @@ function(x, ref.lines=TRUE, ref.color='navy', ref.lty='dotted',
   if(obj.identify) 
     identify(x=x$coord$objects, labels=obj.labels, cex=obj.cex)
 }
+

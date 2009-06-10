@@ -35,7 +35,6 @@
   ## bpca - 2d
   ##
 
-  library(bpca)
   bp <- bpca(gabriel1971)
   bp
 

@@ -3,13 +3,13 @@
 ## a graphical tool for breeders, geneticists, and agronomists.
 ##
 
-library(bpca)
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
+
 bp <- bpca(t(gge2003), var.rb=TRUE)
 
 as.dist(bp$var.rb)
 
-x11(w=8, h=4)
-op = par(no.readonly=TRUE)
+op <- par(no.readonly=TRUE)
 par(mfrow=c(1,2))
 
 plot(bpca(gge2003, var.pos=2),
@@ -23,3 +23,6 @@ plot(bpca(gge2003, var.pos=1),
      obj.col=2:4, obj.cex=.8)
 
 par(op)
+
+devAskNewPage(oask)
+

@@ -38,7 +38,6 @@
   ## Particular use
   ##
 
-  library(bpca)
   bp1 <- bpca(gabriel1971)
   bp1$var.rb # NA
 

@@ -14,8 +14,8 @@
   \tabular{ll}{
   Package: \tab bpca\cr
   Type: \tab Package\cr
-  Version: \tab 1.0.1\cr
-  Date: \tab 2008-08-08\cr
+  Version: \tab 1.0.3\cr
+  Date: \tab 2009-06-10\cr
   License: \tab GPL (>= 2)\cr
   }
 }
@@ -57,12 +57,11 @@
   ## Basic presentation and comparision with 'biplot' function ('stats' package)
   ##
 
-  library(bpca)
-
   # Opening e configuring a graphical device
   x11(w=8, h=4)
   op <- par(no.readonly=TRUE)
   par(mfrow=c(1, 2))
+  oask <- devAskNewPage(dev.interactive(orNone = TRUE))
 
   # Biplot of package stats (left) and bpca of package biplot (right)
   # variables in columns (represented as red vectors)
@@ -85,7 +84,8 @@
        var.factor=2, var.cex=1,
        obj.cex=1)
   par(op)
-
+  devAskNewPage(oask)
+  
   # Summarizing bpca
   summary(bpca(caith, var.scale=FALSE))
   bpca(caith, var.scale=FALSE)$coord
@@ -96,8 +96,8 @@
   ## Grouping objects with different symbols and colors - 2d and 3d
   ##
 
-  library(bpca)
   x11(w=6, h=6)
+  oask <- devAskNewPage(dev.interactive(orNone = TRUE))
 
   # 2d
   plot(bpca(iris[-5]),
@@ -119,4 +119,6 @@
        obj.names=FALSE, obj.cex=.8,
        obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
        simple.axes=FALSE, box=TRUE)
+
+  devAskNewPage(oask)
 }

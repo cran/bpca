@@ -2,11 +2,11 @@
 ## Basic presentation and comparision with 'biplot' function ('stats' package)
 ##
 
-library(bpca)
 # Open e configure a graphical device
 x11(w=8, h=4)
 op <- par(no.readonly=TRUE)
 par(mfrow=c(1, 2))
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
 
 # The biplot of package stats (left) and bpca of package biplot (right)
 # variables in columns (represented as red vectors)
@@ -34,3 +34,6 @@ par(op)
 summary(bpca(caith, var.scale=FALSE))
 bpca(caith, var.scale=FALSE)$coord
 bpca(caith, var.scale=FALSE)$eigenvec
+
+devAskNewPage(oask)
+

@@ -17,7 +17,7 @@
   var.pos=4, var.cex=.6, var.offset=.2,
   obj.color='black', obj.pch=20, obj.pos=4, obj.cex=.6, obj.offset=.2,
   obj.names=TRUE, obj.labels=rownames(x$coord$objects), obj.identify=FALSE,
-  \dots)
+  xlim, ylim, xlab, ylab, \dots)
 
 \method{plot}{bpca.3d}(x, rgl.use=FALSE,
   ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.use, NA, 'dotted'),
@@ -30,7 +30,8 @@
   obj.pos=ifelse(rgl.use, 0, 4), obj.cex=ifelse(rgl.use, .8, .6),
   obj.offset=ifelse(rgl.use, NULL, .2), obj.names=TRUE,
   obj.labels=rownames(x$coord$objects), obj.identify=FALSE,
-  box=FALSE, angle=ifelse(rgl.use, NULL, 40), \dots)
+  box=FALSE, angle=ifelse(rgl.use, NULL, 40), xlim, ylim, zlim, xlab, ylab,
+  zlab, \dots)
 
 \method{plot}{qbpca}(x, xlab='Index', ylab='r', pch=c(1,8), col=c(4,2), \dots)
 }
@@ -78,10 +79,14 @@
   \item{angle}{Angle between x and y axis (Attention: result depends on scaling).
     For 180 < angle < 360 the returned functions xyz.convert and points3d will
     not work properly. Used only if \code{rgl.use=FALSE}.}
-  \item{xlab}{A label for the x axis.}
-  \item{ylab}{A label for the y axis.}
   \item{pch}{A vector of plotting symbols or characters.}
   \item{col}{A vector of colors.}
+  \item{xlab}{A label for the x axis.}
+  \item{ylab}{A label for the y axis.}
+  \item{zlab}{A label for the z axis (bpca.3d only).}
+  \item{xlim}{The x limits of the plot.}
+  \item{ylim}{The y limits of the plot.} 
+  \item{zlim}{The z limits of the plot (bpca.3d only).} 
   \item{\dots}{Other graphical parameters may also be passed as arguments to
     these functions.}
 }
@@ -95,10 +100,12 @@
 
   The methods \code{plot.bpca.3d} draw a 3d biplot (PC1, PC2 and PC3 on axis
   x, y and z, respectively) in two ways:
-  \item{\emph{static}:}{It uses the package \code{scatterplot3d} based on
-    traditional graphic system. Use the parameter \emph{rgl.use=FALSE} for it.}
-  \item{\emph{dinamic}:}{It uses the package \code{rgl}: a 3D real-time rendering
-    device driver system for R. Use the parameter \emph{rgl.use=TRUE} for it.}
+  \itemize{
+    \item{\emph{static}:}{It uses the package \code{scatterplot3d} based on
+      traditional graphic system. Use the parameter \emph{rgl.use=FALSE} for it.}
+    \item{\emph{dinamic}:}{It uses the package \code{rgl}: a 3D real-time rendering
+      device driver system for R. Use the parameter \emph{rgl.use=TRUE} for it.}
+  }  
 
   The method \code{qb.pca} draws a scatterplot of the correlations observed
   (in the data) and projected (under the biplot) related to the variables.
@@ -143,10 +150,10 @@
   ## Computing and ploting a bpca object with 'graphics' package - 2d
   ##
 
-  library(bpca)
   bp <- bpca(gabriel1971)
 
-  x11(w=5, h=5)
+  x11(w=6, h=6)
+  oask <- devAskNewPage(dev.interactive(orNone = TRUE))
   plot(bp, var.factor=2)
 
   # Additional graphical parameters (nonsense)
@@ -162,7 +169,6 @@
 
   bp <- bpca(gabriel1971, lambda.end=3)
 
-  x11(w=6, h=6)
   plot(bp, var.factor=3)
 
   # Additional graphical parameters (nonsense)
@@ -189,8 +195,6 @@
   ## Example 4
   ## Grouping objects with different symbols and colors - 2d and 3d
   ##
-
-  x11(w=6, h=6)
 
   # 2d
   plot(bpca(iris[-5]),
@@ -246,6 +250,8 @@
     plot(bp, obj.names=FALSE,
          obj.labels=c('toi', 'kit', 'bat', 'ele', 'wat', 'rad', 'tv', 'ref'),
          obj.identify=TRUE)
+
+  devAskNewPage(oask)
 }
 
 \keyword{multivariate}

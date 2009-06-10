@@ -51,7 +51,7 @@
   ## Example of 'var.rb=TRUE' parameter as a measure of the quality of the biplot - 2d
   ##
 
-  library(bpca)
+  oask <- devAskNewPage(dev.interactive(orNone = TRUE))
 
   ## Differences between methods of factorization
   # SQRT
@@ -79,8 +79,6 @@
   ## Example of 'var.rb=TRUE' parameter as a measure of the quality of the biplot - 3d
   ##
 
-  library(bpca)
-
   ## Differences between methods of factorization
   # SQRT
   bp1 <- bpca(gabriel1971, meth='sqrt', lambda.end=3, var.rb=TRUE)
@@ -101,6 +99,8 @@
   bp4 <- bpca(gabriel1971, meth='hj', lambda.end=3, var.rb=TRUE)
   qbp4 <- qbpca(gabriel1971, bp4)
   plot(qbp4, main='hj - 3d \n (whow!)')
+  
+  devAskNewPage(oask)  
 }
 
 \keyword{multivariate}

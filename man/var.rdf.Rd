@@ -43,7 +43,8 @@
   ## Diagnostic of gabriel1971 dataset representation
   ##
 
-  library(bpca)
+  oask <- devAskNewPage(dev.interactive(orNone = TRUE))
+  
   bp1 <- bpca(gabriel1971, meth='hj', var.rb=TRUE)
 
   res <- var.rdf(gabriel1971, bp1$var.rb, lim=3)
@@ -108,6 +109,8 @@
   round(cor(iris[-5]), 2)
 
   # Good representation of all variables with a 3d biplot!
+  
+  devAskNewPage(oask)
 }
 
 \keyword{multivariate}

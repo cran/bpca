@@ -2,9 +2,9 @@
 ## Computing and ploting a bpca object with arbitrary choice of the first eigenvalue - 3d
 ##
 
-library(bpca)
-bp <- bpca(gabriel1971, lambda.ini=2, lambda.end=4)
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
 
+bp <- bpca(gabriel1971, lambda.ini=2, lambda.end=4)
 plot(bp, var.factor=2)
 
 # Exploring the object 'bp' created by the function 'bpca'
@@ -24,3 +24,6 @@ bp$var.rd
 
 # Changing the angle between x (PC2) and y (PC3) axis
 plot(bp, var.factor=2, angle=65)
+
+devAskNewPage(oask)
+

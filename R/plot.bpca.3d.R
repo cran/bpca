@@ -10,7 +10,7 @@ function(x, rgl.use=FALSE, ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.
          obj.color='black', obj.pch=ifelse(rgl.use, NULL, 20), obj.pos=ifelse(rgl.use, 0, 4),
          obj.cex=ifelse(rgl.use, .8, .6), obj.offset=ifelse(rgl.use, NULL, .2),
          obj.names=TRUE, obj.labels=rownames(x$coord$objects), obj.identify=FALSE,
-         box=FALSE, angle=ifelse(rgl.use, NULL, 40), ...)
+         box=FALSE, angle=ifelse(rgl.use, NULL, 40), xlim, ylim, zlim, xlab, ylab, zlab, ...)
 {
   if (!inherits(x, 'bpca.3d'))
     stop("Use this function only with 'bpca.3d' class!")
@@ -20,8 +20,23 @@ function(x, rgl.use=FALSE, ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.
                   rep(0, ncol(x$coord$objects)))
 
   # spatial limits
-  ms  <- max(abs(scores)) * 1.2
-  msp <- c(-ms, ms)
+  if (missing(xlim) || missing(ylim) || missing(zlim)) {
+    ms  <- max(abs(scores)) * 1.2
+    msp <- c(-ms, ms)
+  }  
+
+  if (missing(xlim))
+    xlim <- msp
+  if (missing(ylim))
+    ylim <- msp
+  if (missing(zlim))
+    zlim <- msp
+  if (missing(xlab))
+    xlab <- paste('PC', x$number[1], sep='')
+  if (missing(ylab))
+    ylab <- paste('PC', x$number[2], sep='')
+  if (missing(zlab))
+    zlab <- paste('PC', x$number[3], sep='')
 
   # Plot bpca.3d under package 'scatterplot3d'
   if(!rgl.use) {
@@ -36,19 +51,13 @@ function(x, rgl.use=FALSE, ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.
     op <- par(no.readonly=TRUE)
     # a empty plot (reference)
     graph <- scatterplot3d(scores,
-                           xlim=msp,
-                           ylim=msp,
-                           zlim=msp,
+                           xlim=xlim,
+                           ylim=ylim,
+                           zlim=zlim,
                            type='n',
-                           xlab=paste('PC',
-                                      x$number[1],
-                                      sep=''),
-                           ylab=paste('PC',
-                                      x$number[2],
-                                      sep=''),
-                           zlab=paste('PC',
-                                      x$number[3],
-                                      sep=''),
+                           xlab=xlab,
+                           ylab=ylab,
+                           zlab=zlab,
                            grid=FALSE,
                            box=box,
                            angle=angle, ...)
@@ -109,7 +118,7 @@ function(x, rgl.use=FALSE, ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.
     # reference lines
     if(ref.lines) {
       # x
-      graph$points3d(msp,
+      graph$points3d(xlim,
                      c(0, 0),
                      c(0, 0),
                      type='l',
@@ -118,7 +127,7 @@ function(x, rgl.use=FALSE, ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.
 
       # y
       graph$points3d(c(0, 0),
-                     msp,
+                     ylim,
                      c(0, 0),
                      type='l',
                      lty=ref.lty,
@@ -127,7 +136,7 @@ function(x, rgl.use=FALSE, ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.
       # z
       graph$points3d(c(0, 0),
                      c(0, 0),
-                     msp,
+                     zlim,
                      type='l',
                      lty=ref.lty,
                      col=ref.color, ...)
@@ -158,9 +167,9 @@ function(x, rgl.use=FALSE, ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.
 
     # a empty plot (reference)
     plot3d(scores,
-           xlim=msp,
-           ylim=msp,
-           zlim=msp,
+           xlim=xlim,
+           ylim=ylim,
+           zlim=zlim,
            xlab='',
            ylab='',
            zlab='',
@@ -217,33 +226,21 @@ function(x, rgl.use=FALSE, ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.
     if(simple.axes) {
       axes3d(c('x', 'y', 'z'))
       # simple axis
-      title3d(xlab=paste('PC',
-                         x$number[1],
-                         sep=''),
-              ylab=paste('PC',
-                         x$number[2],
-                         sep=''),
-              zlab=paste('PC',
-                         x$number[3],
-                         sep=''), ...)
+      title3d(xlab=xlab,
+              ylab=ylab,
+              zlab=zlab, ...)
     }
     else
       # axes with box
-      decorate3d(xlab=paste('PC',
-                            x$number[1],
-                            sep=''),
-                 ylab=paste('PC',
-                            x$number[2],
-                            sep=''),
-                 zlab=paste('PC',
-                            x$number[3],
-                            sep=''),
+      decorate3d(xlab=xlab,
+                 ylab=ylab,
+                 zlab=zlab,
                  box=box, ...)
 
     # reference lines
     if(ref.lines) {
       # x
-      lines3d(msp,
+      lines3d(xlim,
               c(0, 0),
               c(0, 0),
               lty=ref.lty,
@@ -251,7 +248,7 @@ function(x, rgl.use=FALSE, ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.
 
       # y
       lines3d(c(0, 0),
-              msp,
+              ylim,
               c(0, 0),
               lty=ref.lty,
               col=ref.color, ...)
@@ -259,9 +256,10 @@ function(x, rgl.use=FALSE, ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.
       # z
       lines3d(c(0, 0),
               c(0, 0),
-              msp,
+              zlim,
               lty=ref.lty,
               col=ref.color, ...)
     }
   }
 }
+

@@ -3,7 +3,8 @@
 ## Mainly recommended to large datasets.
 ##
 
-library(bpca)
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
+
 bp <- bpca(gabriel1971, meth='hj', lambda.end=2,
            var.rb=TRUE, var.rd=TRUE, limit=3)
 
@@ -17,3 +18,6 @@ bp$var.rd
 # Graphical visualization of the importance of the variables not contemplated
 # in the reduction
 plot(bpca(gabriel1971, meth='hj', lambda.ini=3, lambda.end=4), main='hj')
+
+devAskNewPage(oask)
+
