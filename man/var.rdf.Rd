@@ -44,7 +44,7 @@
   ##
 
   oask <- devAskNewPage(dev.interactive(orNone = TRUE))
-  
+
   bp1 <- bpca(gabriel1971, meth='hj', var.rb=TRUE)
 
   res <- var.rdf(gabriel1971, bp1$var.rb, lim=3)
@@ -57,7 +57,7 @@
   ##
 
   bp2 <- bpca(gabriel1971, meth='hj', lambda.end=2,
-              var.rb=TRUE, var.rd=TRUE, limit=3)
+  var.rb=TRUE, var.rd=TRUE, limit=3)
 
   plot(bp2, var.factor=2)
 
@@ -88,7 +88,7 @@
 
   # Graphical diagnostic
   plot(bpca(iris[-5], lambda.ini=3, lambda.end=4),
-       obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)], var.factor=.6)
+  obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)], var.factor=.6)
 
   # Interpretation:
   # Sepal.length followed by Petal.Width contains information in dimensions
@@ -100,8 +100,8 @@
   bp4 <- bpca(iris[-5], lambda.end=3, var.rb=TRUE, var.rd=TRUE, limit=2)
 
   plot(bp4, obj.names=FALSE,
-       obj.pch=c('+', '-', '*')[unclass(iris$Species)],
-       obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)], obj.cex=1)
+  obj.pch=c('+', '-', '*')[unclass(iris$Species)],
+  obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)], obj.cex=1)
 
   bp4$var.rd
   bp4$eigenvectors
@@ -109,7 +109,7 @@
   round(cor(iris[-5]), 2)
 
   # Good representation of all variables with a 3d biplot!
-  
+
   devAskNewPage(oask)
 }
 

@@ -4,10 +4,10 @@
 
 open3d()
 plot(pca <- bpca(iris[-5], lambda.end=3), rgl.use=TRUE,
-    var.col='brown', var.factor=.4, var.cex=1.2,
-    obj.names=FALSE, obj.cex=.8,
-    obj.col=c('blue', 'green', 'red')[unclass(iris$Species)],
-    simple.axes=TRUE)
+     var.col='brown', var.factor=.4, var.cex=1.2,
+     obj.names=FALSE, obj.cex=.8,
+     obj.col=c('blue', 'green', 'red')[unclass(iris$Species)],
+     simple.axes=TRUE)
 
 scores <- pca$coord$objects
 ell <- ellipse3d(cov(scores), center=mean(scores), level=0.68)

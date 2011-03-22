@@ -99,7 +99,7 @@
   bp4 <- bpca(gabriel1971, meth='hj', lambda.end=3, var.rb=TRUE)
   qbp4 <- qbpca(gabriel1971, bp4)
   plot(qbp4, main='hj - 3d \n (whow!)')
-  
+
   devAskNewPage(oask)  
 }
 

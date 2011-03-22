@@ -2,7 +2,7 @@
 \alias{gabriel1971}
 
 \title{Percentages of households having various facilities and appliances in East
-       Jerusalem Arab areas, by quarters of the town}
+  Jerusalem Arab areas, by quarters of the town}
 
 \description{
   Percentages of households having various facilities and appliances in East
@@ -16,9 +16,9 @@
 }
 
 \format{
- The format is:
- num [1:8, 1:9] 98.2 78.8 14.4 86.2 32.9 73 4.6 29.2 97.2 81 ...
- - attr(*, "dimnames")=List of 2
+  The format is:
+  num [1:8, 1:9] 98.2 78.8 14.4 86.2 32.9 73 4.6 29.2 97.2 81 ...
+  - attr(*, "dimnames")=List of 2
   ..$ : chr [1:8] "toilet" "kitchen" "bath" "eletricity" ...
   ..$ : chr [1:9] "CRISTIAN" "ARMENIAN" "JEWISH" "MOSLEM" ...
 }

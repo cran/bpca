@@ -12,14 +12,14 @@
 }
 
 \usage{
-\method{plot}{bpca.2d}(x, ref.lines=TRUE, ref.color='navy', ref.lty='dotted',
+  \method{plot}{bpca.2d}(x, ref.lines=TRUE, ref.color='navy', ref.lty='dotted',
   var.factor=1, var.color='red3', var.lty='solid', var.pch=20,
   var.pos=4, var.cex=.6, var.offset=.2,
   obj.color='black', obj.pch=20, obj.pos=4, obj.cex=.6, obj.offset=.2,
   obj.names=TRUE, obj.labels=rownames(x$coord$objects), obj.identify=FALSE,
   xlim, ylim, xlab, ylab, \dots)
 
-\method{plot}{bpca.3d}(x, rgl.use=FALSE,
+  \method{plot}{bpca.3d}(x, rgl.use=FALSE,
   ref.lines=TRUE, ref.color='navy', ref.lty=ifelse(rgl.use, NA, 'dotted'),
   clear3d=ifelse(rgl.use, TRUE, NULL), simple.axes=ifelse(rgl.use, TRUE, NULL),
   aspect=ifelse(rgl.use, c(1, 1, 1), NULL),
@@ -33,7 +33,7 @@
   box=FALSE, angle=ifelse(rgl.use, NULL, 40), xlim, ylim, zlim, xlab, ylab,
   zlab, \dots)
 
-\method{plot}{qbpca}(x, xlab='Index', ylab='r', pch=c(1,8), col=c(4,2), \dots)
+  \method{plot}{qbpca}(x, xlab='Index', ylab='r', pch=c(1,8), col=c(4,2), \dots)
 }
 
 \arguments{
@@ -139,7 +139,7 @@
 
   Yan, B. W. and Kang, M. S. (2003)
   \emph{GGE biplot analysis : a graphical tool for breeders,
-  geneticists, and agronomists}. CRC Press, New York, 288p.
+    geneticists, and agronomists}. CRC Press, New York, 288p.
 }
 
 \seealso{\code{\link{biplot.prcomp}}}
@@ -158,9 +158,9 @@
 
   # Additional graphical parameters (nonsense)
   plot(bpca(gabriel1971, meth='sqrt'),
-       main='gabriel1971 - sqrt', sub='The graphical parameters are working fine!',
-       var.factor=2, var.cex=.6, var.col=rainbow(9), var.pch='v',
-       obj.pch='o', obj.cex=.5, obj.col=rainbow(8), obj.pos=1, obj.offset=.5)
+  main='gabriel1971 - sqrt', sub='The graphical parameters are working fine!',
+  var.factor=2, var.cex=.6, var.col=rainbow(9), var.pch='v',
+  obj.pch='o', obj.cex=.5, obj.col=rainbow(8), obj.pos=1, obj.offset=.5)
 
   ##
   ## Example 2
@@ -173,10 +173,10 @@
 
   # Additional graphical parameters (nonsense)
   plot(bpca(gabriel1971, lambda.end=3, meth='jk'),
-       main='gabriel1971 - jk', sub='The graphical parameters are working fine!',
-       var.factor=6, var.pch='+', var.cex=.6, var.col='green4',
-       obj.pch='*', obj.cex=.8, obj.col=1:8,
-       ref.lty='solid', ref.col='red', angle=70)
+  main='gabriel1971 - jk', sub='The graphical parameters are working fine!',
+  var.factor=6, var.pch='+', var.cex=.6, var.col='green4',
+  obj.pch='*', obj.cex=.8, obj.col=1:8,
+  ref.lty='solid', ref.col='red', angle=70)
 
   ##
   ## Example 3
@@ -184,7 +184,7 @@
   ##
 
   plot(bpca(gabriel1971, lambda.end=3),
-       rgl.use=TRUE, var.factor=2)
+  rgl.use=TRUE, var.factor=2)
 
   # Suggestion: Interact with the graphic with the mouse
   # left button: press, maintain and movement it to interactive rotation;
@@ -198,24 +198,24 @@
 
   # 2d
   plot(bpca(iris[-5]),
-       var.factor=.3, var.cex=.7,
-       obj.names=FALSE, obj.cex=1.5,
-       obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-       obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+  var.factor=.3, var.cex=.7,
+  obj.names=FALSE, obj.cex=1.5,
+  obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
+  obj.pch=c('+', '*', '-')[unclass(iris$Species)])
 
   # 3d static
   plot(bpca(iris[-5], lambda.end=3),
-       var.factor=.2, var.color=c('blue', 'red'), var.cex=1,
-       obj.names=FALSE, obj.cex=1,
-       obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-       obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+  var.factor=.2, var.color=c('blue', 'red'), var.cex=1,
+  obj.names=FALSE, obj.cex=1,
+  obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
+  obj.pch=c('+', '*', '-')[unclass(iris$Species)])
 
   # 3d dinamic
   plot(bpca(iris[-5], method='hj', lambda.end=3), rgl.use=TRUE,
-       var.col='brown', var.factor=.3, var.cex=1.2,
-       obj.names=FALSE, obj.cex=.8,
-       obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
-       simple.axes=FALSE, box=TRUE)
+  var.col='brown', var.factor=.3, var.cex=1.2,
+  obj.names=FALSE, obj.cex=.8,
+  obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
+  simple.axes=FALSE, box=TRUE)
 
   ##
   ## Example 5
@@ -226,13 +226,13 @@
 
   # Normal labels
   if(interactive())
-    plot(bp, obj.names=FALSE, obj.identify=TRUE)
+  plot(bp, obj.names=FALSE, obj.identify=TRUE)
 
   # Alternative labels
   if(interactive())
-    plot(bp, obj.names=FALSE,
-         obj.labels=c('toi', 'kit', 'bat', 'ele', 'wat', 'rad', 'tv', 'ref'),
-         obj.identify=TRUE)
+  plot(bp, obj.names=FALSE,
+  obj.labels=c('toi', 'kit', 'bat', 'ele', 'wat', 'rad', 'tv', 'ref'),
+  obj.identify=TRUE)
 
   ##
   ## Example 6
@@ -243,13 +243,13 @@
 
   # Normal labels
   if(interactive())
-    plot(bp, obj.names=FALSE, obj.identify=TRUE)
+  plot(bp, obj.names=FALSE, obj.identify=TRUE)
 
   # Alternative labels
   if(interactive())
-    plot(bp, obj.names=FALSE,
-         obj.labels=c('toi', 'kit', 'bat', 'ele', 'wat', 'rad', 'tv', 'ref'),
-         obj.identify=TRUE)
+  plot(bp, obj.names=FALSE,
+  obj.labels=c('toi', 'kit', 'bat', 'ele', 'wat', 'rad', 'tv', 'ref'),
+  obj.identify=TRUE)
 
   devAskNewPage(oask)
 }

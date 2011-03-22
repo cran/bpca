@@ -30,6 +30,6 @@ plot(bpca(gabriel1971, lambda.end=3, meth='jk'),
      var.factor=6, var.pch='+', var.cex=.6, var.col='green4',
      obj.pch='*', obj.cex=.8, obj.col=1:8,
      ref.lty='solid', ref.col='red', angle=70)
-    
+
 devAskNewPage(oask)
 

@@ -13,8 +13,8 @@
 \usage{
   bpca(x, \dots)
   \method{bpca}{default}(x, lambda.ini=1, lambda.end=2, var.position=2,
-    var.center=TRUE, var.scale=TRUE, method=c('hj', 'sqrt', 'jk', 'gh'),
-    var.rb=FALSE, var.rd=FALSE, limit=10, \dots)
+  var.center=TRUE, var.scale=TRUE, method=c('hj', 'sqrt', 'jk', 'gh'),
+  var.rb=FALSE, var.rd=FALSE, limit=10, \dots)
   \method{bpca}{prcomp}(x, lambda.ini=1, lambda.end=2, \dots)
 }
 
@@ -40,7 +40,7 @@
     factorization. `hj' to HJ (\emph{simetric}, Galindo (1986)), `sqrt' to
     SQRT (\emph{squared root - simetric}, Gabriel (1971)), `jk' to JK
     (\emph{row metric preserving}, Gabriel (1971)) and 'gh' to GH (\emph{column
-    metric preserving}, Gabriel (1971)).}
+      metric preserving}, Gabriel (1971)).}
   \item{var.rb}{A logical value. If TRUE, all correlation coefficients for all
     variables (\emph{under the biplot projection}) will be computed.}
   \item{var.rd}{A logical value. If TRUE, the diagnostic of the representation
@@ -76,11 +76,11 @@
   \deqn{svd(_{n}Y_{p})}
   \itemize{
     \item \emph{d}: A vector containing the singular values of Y, of length
-      \code{min(n, p)};
+    \code{min(n, p)};
     \item \emph{u}: A matrix whose columns contain the left singular vectors of
-      Y, present if \code{nu > 0}. Dimension \code{c(n, nu)};
+    Y, present if \code{nu > 0}. Dimension \code{c(n, nu)};
     \item \emph{v}: A matrix whose columns contain the right singular vectors of
-      Y, present if \code{nv > 0}. Dimension \code{c(p, nv)}.
+    Y, present if \code{nv > 0}. Dimension \code{c(p, nv)}.
   }  
 
   and also,
@@ -94,17 +94,17 @@
   function are:
   \itemize{
     \item \emph{HJ - simetric}, Galindo (1986):
-      \deqn{g = u*s^2}
-      \deqn{h = s^2*v'}
+    \deqn{g = u*s^2}
+    \deqn{h = s^2*v'}
     \item \emph{SQRT - squared root simetric}, Gabriel (1971):
-      \deqn{g = u*\sqrt{s^2}}
-      \deqn{h = \sqrt{s^2}*v'}
+    \deqn{g = u*\sqrt{s^2}}
+    \deqn{h = \sqrt{s^2}*v'}
     \item \emph{JK - row metric preserving}, Gabriel (1971):
-      \deqn{g = u*s^2}
-      \deqn{h = v'}
+    \deqn{g = u*s^2}
+    \deqn{h = v'}
     \item \emph{GH - column metric preserving}, Gabriel (1971):
-      \deqn{g = \sqrt{n-1}*u}
-      \deqn{h = \frac{1}{\sqrt{n-1}}*s^2*v'}
+    \deqn{g = \sqrt{n-1}*u}
+    \deqn{h = \frac{1}{\sqrt{n-1}}*s^2*v'}
   }  
 
   Considering
@@ -173,7 +173,7 @@
 
   Yan, B. W. and Kang, M. S. (2003)
   \emph{GGE biplot analysis : a graphical tool for breeders,
-  geneticists, and agronomists}. CRC Press, New York, 288p.
+    geneticists, and agronomists}. CRC Press, New York, 288p.
 }
 
 \seealso{\code{\link{biplot.prcomp}}}
@@ -194,22 +194,22 @@
   # variables in columns (represented as red vectors)
   # biplot
   biplot(prcomp(caith, scale=FALSE),
-         main='biplot (stats) (scale=FALSE)')
+  main='biplot (stats) (scale=FALSE)')
 
   # bpca
   plot(bpca(caith, var.scale=FALSE),
-       main='bpca - hj (var.scale=FALSE)',
-       var.factor=2, var.cex=1,
-       obj.cex=1)
+  main='bpca - hj (var.scale=FALSE)',
+  var.factor=2, var.cex=1,
+  obj.cex=1)
 
   # Variables in rows (represented as red vectors)
   biplot(prcomp(t(caith), scale=TRUE),
-         main='biplot (stats) (scale=TRUE)')
+  main='biplot (stats) (scale=TRUE)')
 
   plot(bpca(caith, var.scale=TRUE, var.pos=1),
-       main='bpca - hj (var.scale=TRUE)',
-       var.factor=2, var.cex=1,
-       obj.cex=1)
+  main='bpca - hj (var.scale=TRUE)',
+  var.factor=2, var.cex=1,
+  obj.cex=1)
   par(op)
   devAskNewPage(oask)
 
@@ -278,7 +278,7 @@
   ##
 
   plot(bpca(gabriel1971, lambda.end=3),
-       rgl.use=TRUE, var.factor=2)
+  rgl.use=TRUE, var.factor=2)
 
   # Suggestion: Interact with the graphic with the mouse
   # left button: press, maintain and movement it to interactive rotation;
@@ -292,24 +292,24 @@
 
   # 2d
   plot(bpca(iris[-5]),
-       var.factor=.3, var.cex=.7,
-       obj.names=FALSE, obj.cex=1.5,
-       obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-       obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+  var.factor=.3, var.cex=.7,
+  obj.names=FALSE, obj.cex=1.5,
+  obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
+  obj.pch=c('+', '*', '-')[unclass(iris$Species)])
 
   # 3d static
   plot(bpca(iris[-5], lambda.end=3),
-       var.factor=.2, var.color=c('blue', 'red'), var.cex=1,
-       obj.names=FALSE, obj.cex=1,
-       obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-       obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+  var.factor=.2, var.color=c('blue', 'red'), var.cex=1,
+  obj.names=FALSE, obj.cex=1,
+  obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
+  obj.pch=c('+', '*', '-')[unclass(iris$Species)])
 
   # 3d dinamic
   plot(bpca(iris[-5], method='hj', lambda.end=3), rgl.use=TRUE,
-       var.col='brown', var.factor=.3, var.cex=1.2,
-       obj.names=FALSE, obj.cex=.8,
-       obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
-       simple.axes=FALSE, box=TRUE)
+  var.col='brown', var.factor=.3, var.cex=1.2,
+  obj.names=FALSE, obj.cex=.8,
+  obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
+  simple.axes=FALSE, box=TRUE)
 
   devAskNewPage(oask)       
 }

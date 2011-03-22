@@ -15,8 +15,8 @@
 
 \format{
   The format is:
- num [1:4, 1:3] 20 6 -10 8 -9 12 -6 -12 6 -15 ...
- - attr(*, "dimnames")=List of 2
+  num [1:4, 1:3] 20 6 -10 8 -9 12 -6 -12 6 -15 ...
+  - attr(*, "dimnames")=List of 2
   ..$ : chr [1:4] "G1" "G2" "G3" "G4"
   ..$ : chr [1:3] "E1" "E2" "E3"
 }
@@ -24,7 +24,7 @@
 \references{
   Yan, B. W. and Kang, M. S. (2003)
   \emph{GGE biplot analysis : a graphical tool for breeders,
-  geneticists, and agronomists}. CRC Press, New York, 288p.
+    geneticists, and agronomists}. CRC Press, New York, 288p.
 }
 
 \examples{
@@ -43,14 +43,14 @@
   par(mfrow=c(1,2))
 
   plot(bpca(gge2003, var.pos=2),
-       main='Columns as variables \n (var.pos=2)',
-       var.col=1,
-       obj.col=c(2:4, 2), obj.cex=.8)
+  main='Columns as variables \n (var.pos=2)',
+  var.col=1,
+  obj.col=c(2:4, 2), obj.cex=.8)
 
   plot(bpca(gge2003, var.pos=1),
-       main='Rows as variables \n (var.pos=1)',
-       var.col=1,
-       obj.col=2:4, obj.cex=.8)
+  main='Rows as variables \n (var.pos=1)',
+  var.col=1,
+  obj.col=2:4, obj.cex=.8)
 
   par(op)
 }

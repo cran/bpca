@@ -12,11 +12,11 @@
 
 \details{
   \tabular{ll}{
-  Package: \tab bpca\cr
-  Type: \tab Package\cr
-  Version: \tab 1.0.3\cr
-  Date: \tab 2009-06-10\cr
-  License: \tab GPL (>= 2)\cr
+    Package: \tab bpca\cr
+    Type: \tab Package\cr
+    Version: \tab 1.0-4\cr
+    Date: \tab 2011-03-22\cr
+    License: \tab GPL (>= 2)\cr
   }
 }
 
@@ -45,80 +45,80 @@
 
   Yan, B. W. and Kang, M. S. (2003)
   \emph{GGE biplot analysis : a graphical tool for breeders,
-  geneticists, and agronomists}. CRC Press, New York, 288p.
+    geneticists, and agronomists}. CRC Press, New York, 288p.
 }
 
 \keyword{package}
 \keyword{multivariate}
 
 \examples{
-  ##
-  ## Example 1
-  ## Basic presentation and comparision with 'biplot' function ('stats' package)
-  ##
+##
+## Example 1
+## Basic presentation and comparision with 'biplot' function ('stats' package)
+##
 
-  # Opening e configuring a graphical device
-  x11(w=8, h=4)
-  op <- par(no.readonly=TRUE)
-  par(mfrow=c(1, 2))
-  oask <- devAskNewPage(dev.interactive(orNone = TRUE))
+# Opening e configuring a graphical device
+x11(w=8, h=4)
+op <- par(no.readonly=TRUE)
+par(mfrow=c(1, 2))
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
 
-  # Biplot of package stats (left) and bpca of package biplot (right)
-  # variables in columns (represented as red vectors)
-  # biplot
-  biplot(prcomp(caith, scale=FALSE),
-         main='biplot (stats) (scale=FALSE)')
+# Biplot of package stats (left) and bpca of package biplot (right)
+# variables in columns (represented as red vectors)
+# biplot
+biplot(prcomp(caith, scale=FALSE),
+       main='biplot (stats) (scale=FALSE)')
 
-  # bpca
-  plot(bpca(caith, var.scale=FALSE),
-       main='bpca - hj (var.scale=FALSE)',
-       var.factor=2, var.cex=1,
-       obj.cex=1)
+# bpca
+plot(bpca(caith, var.scale=FALSE),
+     main='bpca - hj (var.scale=FALSE)',
+     var.factor=2, var.cex=1,
+     obj.cex=1)
 
-  # Variables in rows (represented as red vectors)
-  biplot(prcomp(t(caith), scale=TRUE),
-         main='biplot (stats) (scale=TRUE)')
+# Variables in rows (represented as red vectors)
+biplot(prcomp(t(caith), scale=TRUE),
+       main='biplot (stats) (scale=TRUE)')
 
-  plot(bpca(caith, var.scale=TRUE, var.pos=1),
-       main='bpca - hj (var.scale=TRUE)',
-       var.factor=2, var.cex=1,
-       obj.cex=1)
-  par(op)
-  devAskNewPage(oask)
-  
-  # Summarizing bpca
-  summary(bpca(caith, var.scale=FALSE))
-  bpca(caith, var.scale=FALSE)$coord
-  bpca(caith, var.scale=FALSE)$eigenvec
+plot(bpca(caith, var.scale=TRUE, var.pos=1),
+     main='bpca - hj (var.scale=TRUE)',
+     var.factor=2, var.cex=1,
+     obj.cex=1)
+par(op)
+devAskNewPage(oask)
 
-  ##
-  ## Example 2
-  ## Grouping objects with different symbols and colors - 2d and 3d
-  ##
+# Summarizing bpca
+summary(bpca(caith, var.scale=FALSE))
+bpca(caith, var.scale=FALSE)$coord
+bpca(caith, var.scale=FALSE)$eigenvec
 
-  x11(w=6, h=6)
-  oask <- devAskNewPage(dev.interactive(orNone = TRUE))
+##
+## Example 2
+## Grouping objects with different symbols and colors - 2d and 3d
+##
 
-  # 2d
-  plot(bpca(iris[-5]),
-       var.factor=.3, var.cex=.7,
-       obj.names=FALSE, obj.cex=1.5,
-       obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-       obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+x11(w=6, h=6)
+oask <- devAskNewPage(dev.interactive(orNone = TRUE))
 
-  # 3d static
-  plot(bpca(iris[-5], lambda.end=3),
-       var.factor=.2, var.color=c('blue', 'red'), var.cex=1,
-       obj.names=FALSE, obj.cex=1,
-       obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-       obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+# 2d
+plot(bpca(iris[-5]),
+     var.factor=.3, var.cex=.7,
+     obj.names=FALSE, obj.cex=1.5,
+     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
+     obj.pch=c('+', '*', '-')[unclass(iris$Species)])
 
-  # 3d dinamic
-  plot(bpca(iris[-5], method='hj', lambda.end=3), rgl.use=TRUE,
-       var.col='brown', var.factor=.3, var.cex=1.2,
-       obj.names=FALSE, obj.cex=.8,
-       obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
-       simple.axes=FALSE, box=TRUE)
+# 3d static
+plot(bpca(iris[-5], lambda.end=3),
+     var.factor=.2, var.color=c('blue', 'red'), var.cex=1,
+     obj.names=FALSE, obj.cex=1,
+     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
+     obj.pch=c('+', '*', '-')[unclass(iris$Species)])
 
-  devAskNewPage(oask)
+# 3d dinamic
+plot(bpca(iris[-5], method='hj', lambda.end=3), rgl.use=TRUE,
+     var.col='brown', var.factor=.3, var.cex=1.2,
+     obj.names=FALSE, obj.cex=.8,
+     obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
+     simple.axes=FALSE, box=TRUE)
+
+devAskNewPage(oask)
 }

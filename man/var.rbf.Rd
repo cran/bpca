@@ -42,7 +42,7 @@
   bp1$var.rb # NA
 
   res <- var.rbf(bp1$coord$var) # Computes the correlations of all variables under
-                                # the biplot projection
+  # the biplot projection
   res
 
   ##
@@ -50,7 +50,7 @@
   ##
 
   bp2 <- bpca(gabriel1971,
-              var.rb=TRUE)
+  var.rb=TRUE)
 
   bp2$var.rb
 }

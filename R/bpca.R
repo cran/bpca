@@ -1,2 +1,2 @@
 `bpca` <-
-function(x, ...) UseMethod('bpca', x)
+  function(x, ...) UseMethod('bpca', x)

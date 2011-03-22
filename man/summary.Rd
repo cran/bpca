@@ -1,23 +1,21 @@
 \name{summary}
 \alias{summary}
-\alias{summary.bpca.2d}
-\alias{summary.bpca.3d}
+\alias{summary.bpca}
 
 \title{Summary Method for bpca Objects}
 
 \description{
-  Returns (and prints) a summary list for \code{bpca.2d} and
-  \code{bpca.3d} objects.
+  Returns (and prints) a summary list for \code{bpca} (\code{bpca.2d} and
+  \code{bpca.3d}) objects.
 }
 
 \usage{
-  \method{summary}{bpca.2d}(object, \dots)
-  \method{summary}{bpca.3d}(object, \dots)
+  \method{summary}{bpca}(object, \dots)
 }
 
 \arguments{
-  \item{object}{A given object of the class \code{bpca.2d} or
-    \code{bpca.3d}.}
+  \item{object}{A given object of the class \code{bpca} (\code{bpca.2d} or
+    \code{bpca.3d}).}
   \item{\dots}{Potential further arguments (require by generic).}
 }
 
