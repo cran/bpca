@@ -231,7 +231,7 @@ plot.bpca.3d <-
 
         # segments of variables (vectors)
         segments3d(rbind(matrix(0,
-                                nc=3),
+                                ncol=3),
                          x$coord$variables[i,] * var.factor),
                    col=var.color, ...)
       }

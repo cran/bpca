@@ -14,8 +14,8 @@
   \tabular{ll}{
     Package: \tab bpca\cr
     Type: \tab Package\cr
-    Version: \tab 1.0-4\cr
-    Date: \tab 2011-03-22\cr
+    Version: \tab 1.0-5\cr
+    Date: \tab 2011-04-09\cr
     License: \tab GPL (>= 2)\cr
   }
 }

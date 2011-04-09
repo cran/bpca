@@ -1,3 +1,8 @@
+2011-04-09 vs. 1.0-5 - Jose Claudio Faria  <joseclaudio.faria@gmail.com>
+		* It was fixed the NOTE STATUS for some platforms
+		(plot.bpca.3d: warning in matrix(0, nc = 3): partial argument match of
+		'nc' to 'ncol')
+
 2011-03-22 vs. 1.0-4 - Jose Claudio Faria  <joseclaudio.faria@gmail.com>
 
 	* The methods plot.bpca.2d and plot.bpca.3d now, by default, plots the
