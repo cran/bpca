@@ -1,5 +1,4 @@
 \name{plot}
-\alias{plot}
 \alias{plot.bpca.2d}
 \alias{plot.bpca.3d}
 \alias{plot.qbpca}

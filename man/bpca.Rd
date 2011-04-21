@@ -181,45 +181,6 @@
 \examples{
   ##
   ## Example 1
-  ## Basic presentation and compararison with 'biplot' function ('stats' package)
-  ##
-
-  # Opening e configuring a graphical device
-  x11(w=8, h=4)
-  op <- par(no.readonly=TRUE)
-  par(mfrow=c(1, 2))
-  oask <- devAskNewPage(dev.interactive(orNone = TRUE))
-
-  # Biplot of package stats (left) and bpca of package biplot (right)
-  # variables in columns (represented as red vectors)
-  # biplot
-  biplot(prcomp(caith, scale=FALSE),
-  main='biplot (stats) (scale=FALSE)')
-
-  # bpca
-  plot(bpca(caith, var.scale=FALSE),
-  main='bpca - hj (var.scale=FALSE)',
-  var.factor=2, var.cex=1,
-  obj.cex=1)
-
-  # Variables in rows (represented as red vectors)
-  biplot(prcomp(t(caith), scale=TRUE),
-  main='biplot (stats) (scale=TRUE)')
-
-  plot(bpca(caith, var.scale=TRUE, var.pos=1),
-  main='bpca - hj (var.scale=TRUE)',
-  var.factor=2, var.cex=1,
-  obj.cex=1)
-  par(op)
-  devAskNewPage(oask)
-
-  # Summarizing bpca
-  summary(bpca(caith, var.scale=FALSE))
-  bpca(caith, var.scale=FALSE)$coord
-  bpca(caith, var.scale=FALSE)$eigenvec
-
-  ##
-  ## Example 2
   ## Computing and ploting a bpca object with 'graphics' package - 2d
   ##
 
@@ -247,7 +208,7 @@
   bp$var.rd
 
   ##
-  ## Example 3
+  ## Example 2
   ## Computing and ploting a bpca object with 'scatterplot3d' package - 3d
   ##
 
@@ -273,7 +234,7 @@
   bp$var.rd
 
   ##
-  ## Example 4
+  ## Example 3
   ## Computing and ploting a bpca object with 'rgl' package - 3d
   ##
 
@@ -286,7 +247,7 @@
   # Enjoy it!
 
   ##
-  ## Example 5
+  ## Example 4
   ## Grouping objects with different symbols and colors - 2d and 3d
   ##
 

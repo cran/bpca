@@ -1,5 +1,4 @@
 \name{summary}
-\alias{summary}
 \alias{summary.bpca}
 
 \title{Summary Method for bpca Objects}
