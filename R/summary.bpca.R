@@ -20,7 +20,7 @@
         cumsum(object$eigenvalues[object$number[1]:object$number[d]]^2) /
     sum(object$eigenvalues^2))
 
-    cat('\n  - Prop. of total variance retainded:\t',
+    cat('\n  - Prop. of total variance retained:\t',
         object$importance[1])
 
     if(object$importance[1] != object$importance[2])

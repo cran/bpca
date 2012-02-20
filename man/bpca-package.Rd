@@ -10,16 +10,6 @@
   Implements biplot (2d and 3d) and diagnostic tools of the quality of the reduction.
 }
 
-\details{
-  \tabular{ll}{
-    Package: \tab bpca\cr
-    Type: \tab Package\cr
-    Version: \tab 1.0-8\cr
-    Date: \tab 2011-04-21\cr
-    License: \tab GPL (>= 2)\cr
-  }
-}
-
 \author{
   Jose Claudio Faria (\email{joseclaudio.faria@gmail.com})\cr
   and\cr

@@ -60,11 +60,6 @@ plot.bpca.3d <-
     # Plot bpca.3d under package 'scatterplot3d'
     if(!rgl.use) {
 
-      # check scatterplot3d package
-      necessary <- 'scatterplot3d'
-      installed <- necessary %in% installed.packages()[, 'Package']
-      if (length(necessary[!installed]) >=1)
-        stop('The package scatterplot3d is necessary to run this function!')
       require(scatterplot3d)
 
       op <- par(no.readonly=TRUE)
@@ -173,11 +168,6 @@ plot.bpca.3d <-
     # Plot bpca.3d under package 'rgl'
     if(rgl.use) {
 
-      # check rgl package
-      necessary <- 'rgl'
-      installed <- necessary %in% installed.packages()[, 'Package']
-      if (length(necessary[!installed]) >=1)
-        stop('The package rgl is necessary to run this function!')
       require(rgl)
 
       size <- max(x$coord$objects) /
