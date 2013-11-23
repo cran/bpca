@@ -5,7 +5,7 @@
 ## p = columns (variables)
 ##
 
-dt <- dt.tools(iris[-5], 2)
+dt <- dt.tools(iris, 2) # No mumeric columns are removed in dt.tools
 
 # Exploring the object 'bp' created by the function 'var.tools'
 class(dt)
@@ -18,6 +18,11 @@ dt$r
 dt
 
 # Checking the determinations
-iris.tools <- round(dt.tools(iris[-5], var.center=TRUE)$r, 5); iris.tools
-iris.obsv  <- round(cor(iris[-5]), 5); iris.obsv
+(iris.tools <- round(dt.tools(iris,
+                              center=2)$r,
+                     5))
+
+(iris.obsv  <- round(cor(iris[-5]),
+                     5))
+
 all(iris.tools == iris.obsv)

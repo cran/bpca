@@ -1,29 +1,19 @@
-`var.rdf` <-
-  function(x, var.rb, limit)
-  {
-    var.rob <- cor(x)
-    n       <- ncol(x)
-    var.rd  <- diag(n)
-    diag(var.rd) <- '-'
+var.rdf <- function(x,
+                    var.rb,
+                    limit)
+{
+  dif <- 100 * abs(var.rb - cor(x))
 
-    for (i in 1:(n-1)) {
-      for (j in (i+1):n) {
+  big <- dif > limit
+  leq <- dif <= limit
 
-        dif <- abs(var.rob[i,j] -
-                   var.rb[i,j]) * 100
+  dif[big] <- '*'
+  dif[leq] <- ''
+  diag(dif) <- '-'
 
-        if (dif > limit)
-          res <- '*'
-        else
-          res <- ''
+  var.rd <- dif
+  dimnames(var.rd) <- list(dimnames(x)[[2]],
+                           dimnames(x)[[2]])
 
-        var.rd[j,i] <- res          # fill lower.tri
-        var.rd[i,j] <- var.rd[j,i]  # fill upper.tri
-      }
-    }
-
-    dimnames(var.rd) <- list(dimnames(x)[[2]],
-                             dimnames(x)[[2]])
-
-    return(as.data.frame(var.rd))
-  }
+  return(as.data.frame(var.rd))
+}
