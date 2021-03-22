@@ -1,106 +1,127 @@
 ### R code from vignette source 'latex-bpca.Rnw'
 
 ###################################################
-### code chunk number 1: latex-bpca.Rnw:72-80
+### code chunk number 1: latex-bpca.Rnw:72-83
 ###################################################
 library(bpca)
-library(xtable) 
+library(xtable)
 
-## Example: the simplest possible 
-bp1 <- bpca(iris[-5],
-            d=1:3)
+bp <- bpca(iris[-5])
 
-xtable(bp1)
+## The simplest possible
+xtable(bp)
 
+print(xtable(bp))
 
-###################################################
-### code chunk number 2: latex-bpca.Rnw:85-91
-###################################################
-## Example: with caption and label 
-bp2 <- bpca(gabriel1971) 
-
-xtable(bp2,
-       caption='Biplot of gabriel1971 data.',
-       label='tbl_bp2')
+bpca::print.xtable.bpca(xtable(bp))
 
 
 ###################################################
-### code chunk number 3: latex-bpca.Rnw:96-110
+### code chunk number 2: latex-bpca.Rnw:91-96
 ###################################################
-## Example: principal labels in portuguese
-tbl <- xtable(bp2)
-rownames(tbl) <- gsub('Eigenvectors',
-                      'Autovetores',
-                      rownames(tbl))
-
-rownames(tbl) <- c(rownames(tbl)[1:9],
-                   'Autovalores',
-                   'Variância retida',
-                   'Variância acumulada')
-
-dimnames(tbl)[[2]] <- c('CP1','CP2')
-
-print(tbl)
+## With caption and label
+## It will use the methods print.xtable.bpca provided by the bpca package
+xtable(bpca(iris[-5]),
+       caption='Biplot of iris data (packages:datasets).',
+       label='tbl_iris')
 
 
 ###################################################
-### code chunk number 4: latex-bpca.Rnw:115-120
+### code chunk number 3: latex-bpca.Rnw:100-104
 ###################################################
-## Example: with caption and label 
-xtable(bpca(ontario, 
-            d=1:3),
-       caption='Biplot of ontario data.',
-       label='tbl_ontario')
+## With caption and label
+xtable(bpca(gabriel1971),
+       caption='Biplot of gabriel1971 data (package:datasets).',
+       label='tbl_gabriel')
 
 
 ###################################################
-### code chunk number 5: latex-bpca.Rnw:125-137
+### code chunk number 4: latex-bpca.Rnw:112-125
 ###################################################
-## Example: with bold in the column  
-tbl1 <- xtable(bp2,
-               caption='Biplot of gabriel1971 data.',
-               label='tbl_gabriel1971')
+## With bold in the columns
+bp_rock_x <- xtable(bpca(rock),
+                    caption='Biplot of rock data (package:dtasets).',
+                    label='tbl_rock')
+
 bold <- function(x){
   paste('\\textbf{',
-        x, 
+        x,
         '}')
 }
 
-print(tbl1,
+print(bp_rock_x,
       sanitize.colnames.function = bold)
 
 
 ###################################################
-### code chunk number 6: latex-bpca.Rnw:143-154
+### code chunk number 5: latex-bpca.Rnw:131-145
 ###################################################
-# Example: with italic in the rows
-tbl2 <- xtable(bp2)
-italic <- function(x)
-{
-  paste('\\textit{',
-        x, 
-        '}')
-} # It is necessary the character "&" to adapt the number of column of the table!
+## With italic in the rows
+bp_USA_x <- xtable(bpca(USArrests),
+                   caption='Biplot of USArrests data (package:datasets).',
+                   label='tbl_USArrests')
 
-print(tbl2,
+italic <- function(x){
+  paste('\\textit{',
+        x,
+        '}',
+        sep='')
+}
+
+print(bp_USA_x,
       sanitize.rownames.function = italic)
 
 
 ###################################################
-### code chunk number 7: latex-bpca.Rnw:158-171
+### code chunk number 6: latex-bpca.Rnw:152-177
 ###################################################
-##Example: I don't want this formatations (print.xtable.bpca)! Then you can to call directaly the print.xtable function.
-italic1 <- function(x)
-{
-  paste('\\textit{',
-        x, 
-        '}')
-} 
- 
-print.xtable(tbl,
-             sanitize.colnames.function=bold,
-             sanitize.rownames.function=italic1)
+## Principal labels in portuguese
+tbl_rock_x <- xtable(bpca(rock),
+                     caption='Biplot of rock data (package:datasets).',
+                     label='tbl_rock_2')
 
-## To others formatations see ?xtable and/or ?print.xtable!
+rownames(tbl_rock_x) <- gsub('Eigenvalues',
+                             'Autovalores',
+                             rownames(tbl_rock_x))
+
+rownames(tbl_rock_x) <- gsub('Eigenvectors',
+                             'Autovetores',
+                             rownames(tbl_rock_x))
+
+rownames(tbl_rock_x) <- gsub('Variance retained',
+                             'Variância retida',
+                             rownames(tbl_rock_x))
+
+rownames(tbl_rock_x) <- gsub('Variance accumulated',
+                             'Variância acumulada',
+                             rownames(tbl_rock_x))
+
+colnames(tbl_rock_x) <- c('CP1',
+                          'CP2')
+
+print(tbl_rock_x)
+
+
+###################################################
+### code chunk number 7: latex-bpca.Rnw:184-202
+###################################################
+## If you don't want to use the bpca formatting standard (method print.xtable.bpca),
+## you can directly call the print.xtable function and format the table as you wish.
+italic <- function(x){
+  paste('\\textit{',
+        x,
+        '}',
+        sep='')
+}
+
+print.xtable(xtable(bpca(rock),
+             caption='Call directly the print.xtable function',
+             label='tbl_directly'),
+             sanitize.colnames.function=bold,
+             sanitize.rownames.function=italic)
+
+## To others formatations see:
+## - ?xtable
+## - ?print.xtable
 
 
