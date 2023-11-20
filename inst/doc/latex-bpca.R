@@ -1,7 +1,7 @@
 ### R code from vignette source 'latex-bpca.Rnw'
 
 ###################################################
-### code chunk number 1: latex-bpca.Rnw:72-83
+### code chunk number 1: latex-bpca.Rnw:72-81
 ###################################################
 library(bpca)
 library(xtable)
@@ -13,11 +13,9 @@ xtable(bp)
 
 print(xtable(bp))
 
-bpca::print.xtable.bpca(xtable(bp))
-
 
 ###################################################
-### code chunk number 2: latex-bpca.Rnw:91-96
+### code chunk number 2: latex-bpca.Rnw:89-94
 ###################################################
 ## With caption and label
 ## It will use the methods print.xtable.bpca provided by the bpca package
@@ -27,7 +25,7 @@ xtable(bpca(iris[-5]),
 
 
 ###################################################
-### code chunk number 3: latex-bpca.Rnw:100-104
+### code chunk number 3: latex-bpca.Rnw:98-102
 ###################################################
 ## With caption and label
 xtable(bpca(gabriel1971),
@@ -36,7 +34,7 @@ xtable(bpca(gabriel1971),
 
 
 ###################################################
-### code chunk number 4: latex-bpca.Rnw:112-125
+### code chunk number 4: latex-bpca.Rnw:110-123
 ###################################################
 ## With bold in the columns
 bp_rock_x <- xtable(bpca(rock),
@@ -54,7 +52,7 @@ print(bp_rock_x,
 
 
 ###################################################
-### code chunk number 5: latex-bpca.Rnw:131-145
+### code chunk number 5: latex-bpca.Rnw:129-143
 ###################################################
 ## With italic in the rows
 bp_USA_x <- xtable(bpca(USArrests),
@@ -73,7 +71,7 @@ print(bp_USA_x,
 
 
 ###################################################
-### code chunk number 6: latex-bpca.Rnw:152-177
+### code chunk number 6: latex-bpca.Rnw:150-175
 ###################################################
 ## Principal labels in portuguese
 tbl_rock_x <- xtable(bpca(rock),
@@ -103,7 +101,7 @@ print(tbl_rock_x)
 
 
 ###################################################
-### code chunk number 7: latex-bpca.Rnw:184-202
+### code chunk number 7: latex-bpca.Rnw:182-200
 ###################################################
 ## If you don't want to use the bpca formatting standard (method print.xtable.bpca),
 ## you can directly call the print.xtable function and format the table as you wish.
