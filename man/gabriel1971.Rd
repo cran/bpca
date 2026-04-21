@@ -41,8 +41,7 @@ data(gabriel1971)
 bp <- bpca(gabriel1971)
 
 dev.new(w=6, h=6)
-plot(bp,
-     var.factor=2)
+plot(bp)
 
 # Exploring the object 'bp' created by the function 'bpca'
 class(bp)

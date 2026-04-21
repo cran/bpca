@@ -1,3 +1,4 @@
+# José Cláudio Faria
 plot.bpca.2d <- function(x,
                          type=c('bp', 'eo', 'ev', 'co', 'cv', 'ww', 'dv', 'ms', 'ro', 'rv'),
                          c.color='darkgray',
@@ -17,7 +18,7 @@ plot.bpca.2d <- function(x,
                          ref.lines=TRUE,
                          ref.color='navy',
                          ref.lty='dotted',
-                         var.factor=1,
+                         var.factor=NULL,
                          var.color='red3',
                          var.lty='solid',
                          var.pch=20,
@@ -64,21 +65,35 @@ plot.bpca.2d <- function(x,
 
   draw.var <-
     function()
-    {   
-      # variables
-      points(x=covar[,d1] * var.factor,
-             y=covar[,d2] * var.factor,
+    {
+      # Coordenadas escalonadas
+      vx <- covar[,d1] * var.factor
+      vy <- covar[,d2] * var.factor
+
+      # Desenha os pontos (pontas dos vetores)
+      points(x=vx,
+             y=vy,
              pch=var.pch,
              col=var.color,
              cex=var.cex, ...)
 
-      text(x=covar[,d1] * var.factor,
-           y=covar[,d2] * var.factor,
-           labels=rownames(covar),
-           pos=var.pos,
-           offset=var.offset,
-           col=var.color,
-           cex=var.cex, ...)
+      # Desenha os textos com ajuste radial e folga (offset)
+      for (i in 1:nrow(covar)) {
+        # 1. Determina o ajuste (0 = esquerda, 1 = direita)
+        adj.x <- ifelse(vx[i] >= 0, 0, 1)
+
+        # 2. Cria a folga baseada no var.offset e no sinal da coordenada
+        # Dividimos por um fator (ex: 10 ou 20) para a folga ser proporcional
+        off.x <- sign(vx[i]) * (var.offset * 0.2)
+        off.y <- sign(vy[i]) * (var.offset * 0.2)
+
+        text(x=vx[i] + off.x,
+             y=vy[i] + off.y,
+             labels=rownames(covar)[i],
+             adj=c(adj.x, 0.5), # 0.5 centraliza o texto verticalmente na ponta
+             col=var.color,
+             cex=var.cex, ...)
+      }
     }
 
   draw.var.seg <-
@@ -115,22 +130,42 @@ plot.bpca.2d <- function(x,
   d1 <- x$number[1]
   d2 <- x$number[2]
 
+  if (is.null(var.factor))
+    var.factor <- max(abs(coobj)) / max(abs(covar))
+
   scores <- rbind(coobj,
-                  covar * var.factor,
-                  rep(0, 
-                      ncol(coobj)))
+                  covar * var.factor)
 
   if (missing(obj.labels))
     obj.labels <- rownames(coobj)
 
+#  if (missing(xlim) || missing(ylim)) {
+#    ms <- max(abs(scores)) * 1.1
+#    msp <- c(-ms, ms)
+#  }
+#
+#  if (missing(xlim))
+#    xlim <- msp
+#  if (missing(ylim))
+#    ylim <- msp
+
+  # Calculo automatico de xlim e ylim se nao fornecidos
   if (missing(xlim) || missing(ylim)) {
-    ms <- max(abs(scores)) * 1.2
-    msp <- c(-ms, ms)
+    # Extrai ranges atuais
+    rx <- range(scores[, d1], na.rm=TRUE)
+    ry <- range(scores[, d2], na.rm=TRUE)
+
+    # Buffer proporcional ao cex e ao tamanho do grafico (ajustavel)
+    # 15% de folga costuma acomodar bem os textos laterais
+    buffer_x <- diff(rx) * (max(var.cex, obj.cex) * 0.20)
+    buffer_y <- diff(ry) * (max(var.cex, obj.cex) * 0.20)
+
+    if (missing(xlim))
+      xlim <- c(rx[1] - buffer_x, rx[2] + buffer_x)
+
+    if (missing(ylim))
+      ylim <- c(ry[1] - buffer_y, ry[2] + buffer_y)
   }
-  if (missing(xlim))
-    xlim <- msp
-  if (missing(ylim))
-    ylim <- msp
 
   if (missing(xlab) || missing(ylab)) {
     eigv <- x$eigenvalues
@@ -337,32 +372,7 @@ plot.bpca.2d <- function(x,
            draw.var.seg()
            draw.circles()
          }, 
-         ww={ ## which won where/what (from 1.0-0)
-           #draw.obj()
-           #draw.var()
-
-           #indice <- c(chull(coobj[,d1], coobj[,d2]))
-
-           #polygon(x=coobj[indice,d1], y=coobj[indice,d2],
-           #border=proj.color,
-           #lty=proj.lty, ...)
-           #i <- 1
-           #while (is.na(indice[i+1]) == FALSE) {
-           #abline(a=0,
-           #b=-(coobj[indice[i],d1] - coobj[indice[i+1],d1]) /
-           #(coobj[indice[i],d2] - coobj[indice[i+1],d2]),
-           #col=base.color,
-           #lty=base.lty, ...)
-
-           #i <- i+1}
-
-           #abline(a=0,
-           #b=-(coobj[indice[i],d1] - coobj[indice[1],d1]) /
-           #(coobj[indice[i],d2] - coobj[indice[1],d2]),
-           #col=base.color,
-           #lty=base.lty, ...)
-
-           ## which won where/what (from 1.0-1)
+         ww={ ## which won where/what (from 1.0-1)
            draw.obj()
            draw.var()
 

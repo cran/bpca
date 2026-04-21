@@ -1,3 +1,4 @@
+# José Cláudio Faria
 var.rbf <- function(x)
 {
   lv <- function(x) sqrt(t(x) %*% x)  # length of vector

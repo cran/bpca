@@ -1,3 +1,4 @@
+# José Cláudio Faria
 bpca.prcomp <- function(x,
                         d=1:2, ...)
 {

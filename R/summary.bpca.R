@@ -1,3 +1,4 @@
+# José Cláudio Faria
 summary.bpca <- function(object,
                          presentation=FALSE, ...)
 {

@@ -1,3 +1,4 @@
+# José Cláudio Faria
 plot.qbpca <- function(x,
                        xlab='Index',
                        ylab='r',

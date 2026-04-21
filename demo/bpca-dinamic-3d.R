@@ -7,11 +7,10 @@ plot(pca <- bpca(iris[-5],
                  d=1:3),
      rgl.use=TRUE,
      var.col='brown',
-     var.factor=.4,
      var.cex=1.2,
      obj.names=FALSE,
-     obj.cex=.8,
-     obj.col=c('blue', 'green', 'red')[unclass(iris$Species)],
+     obj.cex=.3,
+     obj.col=c('blue', 'green', 'red')[as.numeric(iris$Species)],
      simple.axes=TRUE)
 
 scores <- pca$coord$objects

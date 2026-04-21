@@ -200,8 +200,7 @@ bp <- bpca(gabriel1971)
 
 dev.new(w=6, h=6)
 oask <- devAskNewPage(dev.interactive(orNone=TRUE))
-plot(bp,
-     var.factor=2)
+plot(bp)
 
 # Exploring the object 'bp' created by the function 'bpca'
 class(bp)
@@ -229,11 +228,7 @@ bp$var.rd
 bp <- bpca(gabriel1971,
            d=2:4)
 
-plot(bp,
-     var.factor=3,
-     xlim=c(-2,2),
-     ylim=c(-2,2),
-     zlim=c(-2,2))
+plot(bp)
 
 # Exploring the object 'bp' created by the function 'bpca'
 class(bp)
@@ -259,8 +254,7 @@ bp$var.rd
 
 plot(bpca(gabriel1971,
           d=1:3),
-     rgl.use=TRUE,
-     var.factor=2)
+     rgl.use=TRUE)
 
 # Suggestion: Interact with the graphic with the mouse
 # left button: press, maintain and movement it to interactive rotation;
@@ -274,35 +268,32 @@ plot(bpca(gabriel1971,
 
 # 2d
 plot(bpca(iris[-5]),
-     var.factor=.3,
      var.cex=.7,
      obj.names=FALSE,
      obj.cex=1.5,
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-     obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
+     obj.pch=c('+', '*', '-')[as.numeric(iris$Species)])
 
 # 3d static
 plot(bpca(iris[-5],
           d=1:3),
-     var.factor=.2,
      var.color=c('blue', 'red'),
      var.cex=1,
      obj.names=FALSE,
      obj.cex=1,
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-     obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
+     obj.pch=c('+', '*', '-')[as.numeric(iris$Species)])
 
 # 3d dynamic
 plot(bpca(iris[-5],
           method='hj',
           d=1:3),
      rgl.use=TRUE,
-     var.col='brown',
-     var.factor=.3,
+     var.col=c('blue', 'red'),
      var.cex=1.2,
      obj.names=FALSE,
      obj.cex=.8,
-     obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
+     obj.col=c('red', 'green3', 'orange')[as.numeric(iris$Species)],
      simple.axes=FALSE,
      box=TRUE)
 }

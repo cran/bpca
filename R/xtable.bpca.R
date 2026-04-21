@@ -1,3 +1,4 @@
+# José Cláudio Faria
 xtable.bpca <- function(x,
                         caption=NULL,
                         label=NULL,

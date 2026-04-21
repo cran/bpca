@@ -4,34 +4,32 @@
 
 oask <- devAskNewPage(dev.interactive(orNone=TRUE))
 
-bp <- bpca(gabriel1971)
+bp2 <- bpca(gabriel1971)
 
-plot(bp, 
-     var.factor=2)
+plot(bp2)
 
-# Exploring the object 'bp' created by the function 'bpca'
-class(bp)
-names(bp)
-str(bp)
+# Exploring the object 'bp2' created by the function 'bpca'
+class(bp2)
+names(bp2)
+str(bp2)
 
-summary(bp)
-bp$call
-bp$eigenval
-bp$eigenvec
-bp$numb
-bp$import
-bp$coord
-bp$coord$obj
-bp$coord$var
-bp$var.rb
-bp$var.rd
+summary(bp2)
+bp2$call
+bp2$eigenval
+bp2$eigenvec
+bp2$numb
+bp2$import
+bp2$coord
+bp2$coord$obj
+bp2$coord$var
+bp2$var.rb
+bp2$var.rd
 
 # Additional graphical parameters (nonsense)
 plot(bpca(gabriel1971,
           meth='sqrt'),
      main='gabriel1971 - sqrt',
      sub='The graphical parameters are working fine!',
-     var.factor=2,
      var.cex=.6,
      var.col=rainbow(9),
      var.pch='v',
@@ -45,28 +43,27 @@ plot(bpca(gabriel1971,
 ## Computing and plotting a bpca object with 'scatterplot3d' package - 3d
 ##
 
-bp <- bpca(gabriel1971,
-           d=1:3)
+bp3 <- bpca(gabriel1971,
+            d=1:3)
 
-plot(bp,
-     var.factor=3)
+plot(bp3)
 
-# Exploring the object 'bp' created by the function 'bpca'
-class(bp)
-names(bp)
-str(bp)
+# Exploring the object 'bp3' created by the function 'bpca'
+class(bp3)
+names(bp3)
+str(bp3)
 
-summary(bp)
-bp$call
-bp$eigenval
-bp$eigenvec
-bp$numb
-bp$import
-bp$coord
-bp$coord$obj
-bp$coord$var
-bp$var.rb
-bp$var.rd
+summary(bp3)
+bp3$call
+bp3$eigenval
+bp3$eigenvec
+bp3$numb
+bp3$import
+bp3$coord
+bp3$coord$obj
+bp3$coord$var
+bp3$var.rb
+bp3$var.rd
 
 # Additional graphical parameters (nonsense)
 plot(bpca(gabriel1971,
@@ -74,13 +71,12 @@ plot(bpca(gabriel1971,
           meth='jk'),
      main='gabriel1971 - jk',
      sub='The graphical parameters are working fine!',
-     var.factor=6,
      var.pch='+',
      var.cex=.6,
-     var.col='green4',
+     var.col=rainbow(ncol(gabriel1971)),
      obj.pch='*',
      obj.cex=.8,
-     obj.col=1:8,
+     obj.col=rainbow(nrow(gabriel1971)),
      ref.lty='solid',
      ref.col='red',
      angle=70)
@@ -89,18 +85,18 @@ plot(bpca(gabriel1971,
 ## Computing and plotting a bpca object with 'obj.identify=TRUE' parameter - 2d
 ##
 
-bp <- bpca(gabriel1971)
+bp2 <- bpca(gabriel1971)
 
 # Normal labels
 if(dev.interactive()) {
-  plot(bp,
+  plot(bp2,
        obj.names=FALSE,
        obj.identify=TRUE)
 }  
 
 # Alternative labels
 if(dev.interactive()) {
-  plot(bp,
+  plot(bp2,
        obj.names=FALSE,
        obj.labels=c('toi', 'kit', 'bat', 'ele', 'wat', 'rad', 'tv', 'ref'),
        obj.identify=TRUE)
@@ -110,19 +106,19 @@ if(dev.interactive()) {
 ## Computing and plotting a bpca object with 'obj.identify=TRUE' parameter - 3d
 ##
 
-bp <- bpca(gabriel1971,
+bp3 <- bpca(gabriel1971,
            d=1:3)
 
 # Normal labels
 if(dev.interactive()) {
-  plot(bp,
+  plot(bp3,
        obj.names=FALSE,
        obj.identify=TRUE)
 }  
 
 # Alternative labels
 if(dev.interactive()) {
-  plot(bp,
+  plot(bp3,
        obj.names=FALSE,
        obj.labels=c('toi', 'kit', 'bat', 'ele', 'wat', 'rad', 'tv', 'ref'),
        obj.identify=T)
@@ -136,7 +132,7 @@ if(dev.interactive()) {
 ##
 
 dt <- dt.tools(iris,
-               var.pos=2) # No numeric columns are removed in 'dt.tools'
+               center=2) # No numeric columns are removed in 'dt.tools'
 
 # Exploring the object 'bp' created by the function 'var.tools'
 class(dt)
@@ -149,8 +145,7 @@ dt$r
 dt
 
 # Checking the determinations
-(iris.tools <- round(dt.tools(iris[-5],
-                              center=2)$r,
+(iris.tools <- round(dt$r,
                      5))
 
 (iris.obsv  <- round(cor(iris[-5]),
@@ -164,23 +159,21 @@ all(iris.tools == iris.obsv)
 
 # 2d
 plot(bpca(iris[-5]),
-     var.factor=.3,
      var.cex=.7,
      obj.names=FALSE,
      obj.cex=1.5,
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-     obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
+     obj.pch=c('+', '*', '-')[as.numeric(iris$Species)])
 
 # 3d static
 plot(bpca(iris[-5],
           d=1:3),
-     var.factor=.2,
      var.color=c('blue', 'red'),
      var.cex=1,
      obj.names=FALSE,
      obj.cex=1,
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-     obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
+     obj.pch=c('+', '*', '-')[as.numeric(iris$Species)])
 
 ##
 ## Example of 'var.rb=TRUE' parameter as a measure of the quality of the biplot - 2d
@@ -188,45 +181,47 @@ plot(bpca(iris[-5],
 
 ## Differences between methods of factorization
 # SQRT
-bp1 <- bpca(gabriel1971,
-            meth='sqrt',
-            var.rb=TRUE)
+bp2_sqrt <- bpca(gabriel1971,
+                 meth='sqrt',
+                 var.rb=TRUE)
 
-qbp1 <- qbpca(gabriel1971,
-              bp1)
+qbp2_sqrt <- qbpca(gabriel1971,
+                   bp2_sqrt)
 
-plot(qbp1, main='sqrt - 2d \n (poor)')
+plot(qbp2_sqrt,
+     main='sqrt - 2d \n (poor)')
 
 # JK
-bp2 <- bpca(gabriel1971,
-            meth='jk',
-            var.rb=TRUE)
+bp2_jk <- bpca(gabriel1971,
+               meth='jk',
+               var.rb=TRUE)
 
-qbp2 <- qbpca(gabriel1971, bp2)
+qbp2_jk <- qbpca(gabriel1971,
+                 bp2_jk)
 
-plot(qbp2,
+plot(qbp2_jk,
      main='jk - 2d \n (very poor)')
 
 # GH
-bp3 <- bpca(gabriel1971,
-            meth='gh',
-            var.rb=TRUE)
+bp2_gh <- bpca(gabriel1971,
+               meth='gh',
+               var.rb=TRUE)
 
-qbp3 <- qbpca(gabriel1971,
-              bp3)
+qbp2_gh <- qbpca(gabriel1971,
+                 bp2_gh)
 
-plot(qbp3,
+plot(qbp2_gh,
      main='gh - 2d \n (good)')
 
 # HJ
-bp4 <- bpca(gabriel1971,
-            meth='hj',
-            var.rb=TRUE)
+bp2_hj <- bpca(gabriel1971,
+               meth='hj',
+               var.rb=TRUE)
 
-qbp4 <- qbpca(gabriel1971,
-              bp4)
+qbp2_hj <- qbpca(gabriel1971,
+                 bp2_hj)
 
-plot(qbp4,
+plot(qbp2_hj,
      main='hj - 2d \n (good)')
 
 ##
@@ -235,51 +230,51 @@ plot(qbp4,
 
 ## Differences between methods of factorization
 # SQRT
-bp1 <- bpca(gabriel1971,
-            meth='sqrt',
-            d=1:3,
-            var.rb=TRUE)
+bp3_sqrt <- bpca(gabriel1971,
+                 meth='sqrt',
+                 d=1:3,
+                 var.rb=TRUE)
 
-qbp1 <- qbpca(gabriel1971,
-              bp1)
+qbp_sqrt <- qbpca(gabriel1971,
+                  bp3_sqrt)
 
-plot(qbp1,
+plot(qbp_sqrt,
      main='sqrt - 3d \n (poor)')
 
 # JK
-bp2 <- bpca(gabriel1971,
-            meth='jk',
-            d=1:3,
-            var.rb=TRUE)
+bp3_jk <- bpca(gabriel1971,
+               meth='jk',
+               d=1:3,
+               var.rb=TRUE)
 
-qbp2 <- qbpca(gabriel1971,
-              bp2)
+qbp3_jk <- qbpca(gabriel1971,
+                 bp3_jk)
 
-plot(qbp2,
+plot(qbp3_jk,
      main='jk - 3d \n (very poor)')
 
 # GH
-bp3 <- bpca(gabriel1971,
-            meth='gh',
-            d=1:3,
-            var.rb=TRUE)
+bp3_gh <- bpca(gabriel1971,
+               meth='gh',
+               d=1:3,
+               var.rb=TRUE)
 
-qbp3 <- qbpca(gabriel1971,
-              bp3)
+qbp3_gh <- qbpca(gabriel1971,
+                 bp3_gh)
 
-plot(qbp3,
+plot(qbp3_gh,
      main='gh - 3d \n (whow!)')
 
 # HJ
-bp4 <- bpca(gabriel1971,
-            meth='hj',
-            d=1:3,
-            var.rb=TRUE)
+bp3_hj <- bpca(gabriel1971,
+               meth='hj',
+               d=1:3,
+               var.rb=TRUE)
 
-qbp4 <- qbpca(gabriel1971,
-              bp4)
+qbp3_hj <- qbpca(gabriel1971,
+                 bp3_hj)
 
-plot(qbp4,
+plot(qbp3_hj,
      main='hj - 3d \n (whow!)')
 
 ##
@@ -305,10 +300,7 @@ bp$var.rd
 plot(bpca(gabriel1971,
           meth='hj',
           d=3:4),
-     main='hj',
-     xlim=c(-1,1),
-     ylim=c(-1,1),
-     zlim=c(-1,1))
+     main='hj')
 
 ##
 ## New options plotting
@@ -369,9 +361,8 @@ cl <- 1:3
 plot(bpca(iris[-5]),
      type='ev',
      var.id=1,
-     var.fac=.3,
      obj.names=FALSE,
-     obj.col=cl[unclass(iris$Species)])
+     obj.col=cl[as.numeric(iris$Species)])
 
 legend('topleft',
        legend=levels(iris$Species),
@@ -435,7 +426,7 @@ plot(bpca(iris[-5]),
 plot(bpca(iris[-5]),
      type='ev',
      var.id='Sepal.Width',
-     var.factor=.3)
+     var.fac=.3)
 
 devAskNewPage(oask)
 

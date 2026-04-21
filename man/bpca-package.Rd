@@ -52,35 +52,32 @@ oask <- devAskNewPage(dev.interactive(orNone=TRUE))
 \dontrun{
 # 2d
 plot(bpca(iris[-5]),
-     var.factor=.3,
      var.cex=.7,
      obj.names=FALSE,
      obj.cex=1.5,
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-     obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
+     obj.pch=c('+', '*', '-')[as.numeric(iris$Species)])
 
 # 3d static
 plot(bpca(iris[-5],
           d=1:3),
-     var.factor=.2,
      var.color=c('blue', 'red'),
      var.cex=1,
      obj.names=FALSE,
      obj.cex=1,
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-     obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
+     obj.pch=c('+', '*', '-')[as.numeric(iris$Species)])
 
 # 3d dynamic
 plot(bpca(iris[-5],
           method='hj',
           d=1:3),
      rgl.use=TRUE,
-     var.col='brown',
-     var.factor=.3,
+     var.col=c('blue', 'red'),
      var.cex=1.2,
      obj.names=FALSE,
      obj.cex=.8,
-     obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
+     obj.col=c('red', 'green3', 'orange')[as.numeric(iris$Species)],
      simple.axes=FALSE,
      box=TRUE)
 }
@@ -141,9 +138,8 @@ cl <- 1:3
 plot(bpca(iris[-5]),
      type='ev',
      var.id=1,
-     var.fac=.3,
      obj.names=FALSE,
-     obj.col=cl[unclass(iris$Species)])
+     obj.col=cl[as.numeric(iris$Species)])
 
 legend('topleft',
        legend=levels(iris$Species),
@@ -208,7 +204,6 @@ plot(bpca(iris[-5]),
 plot(bpca(iris[-5]),
      type='ev',
      var.id='Sepal.Width',
-     var.factor=.3)
 }
 
 devAskNewPage(oask)

@@ -1,3 +1,4 @@
+# José Cláudio Faria
 qbpca <- function(x,
                   bpca)
 {

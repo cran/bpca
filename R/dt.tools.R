@@ -1,3 +1,4 @@
+# José Cláudio Faria
 dt.tools <- function(x,
                      center=2,
                      scale=TRUE)

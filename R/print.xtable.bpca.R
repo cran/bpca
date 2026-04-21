@@ -1,3 +1,4 @@
+# José Cláudio Faria
 print.xtable.bpca <- function(x,
                               hline.after=getOption("xtable.hline.after", NULL),
                               include.colnames=getOption("xtable.include.colnames", FALSE),

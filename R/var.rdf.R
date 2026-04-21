@@ -1,3 +1,4 @@
+# José Cláudio Faria
 var.rdf <- function(x,
                     var.rb,
                     limit)

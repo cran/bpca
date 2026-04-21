@@ -6,52 +6,52 @@ oask <- devAskNewPage(dev.interactive(orNone=TRUE))
 
 ## Differences between methods of factorization
 # SQRT
-bp1 <- bpca(gabriel1971,
-            meth='sqrt',
-            d=1:3,
-            var.rb=TRUE)
+bp_sqrt <- bpca(gabriel1971,
+                meth='sqrt',
+                d=1:3,
+                var.rb=TRUE)
 
-qbp1 <- qbpca(gabriel1971,
-              bp1)
+qbp_sqrt <- qbpca(gabriel1971,
+                  bp_sqrt)
 
-plot(qbp1,
+plot(qbp_sqrt,
      main='sqrt - 3d \n (poor)')
 
 # JK
-bp2 <- bpca(gabriel1971,
-            meth='jk',
-            d=1:3,
-            var.rb=TRUE)
+bp_jk <- bpca(gabriel1971,
+              meth='jk',
+              d=1:3,
+              var.rb=TRUE)
 
-qbp2 <- qbpca(gabriel1971,
-              bp2)
+qbp_jk <- qbpca(gabriel1971,
+                bp_jk)
 
-plot(qbp2,
+plot(qbp_jk,
      main='jk - 3d \n (very poor)')
 
-# GH
-bp3 <- bpca(gabriel1971,
-            meth='gh',
-            d=1:3,
-            var.rb=TRUE)
-
-qbp3 <- qbpca(gabriel1971,
-              bp3)
-
-plot(qbp3,
-     main='gh - 3d \n (whow!)')
-
 # HJ
-bp4 <- bpca(gabriel1971,
-            meth='hj',
-            d=1:3,
-            var.rb=TRUE)
+bp_hj <- bpca(gabriel1971,
+              meth='hj',
+              d=1:3,
+              var.rb=TRUE)
 
-qbp4 <- qbpca(gabriel1971,
-              bp4)
+qbp_hj <- qbpca(gabriel1971,
+                bp_hj)
 
-plot(qbp4,
+plot(qbp_hj,
      main='hj - 3d \n (whow!)')
+
+# GH
+bp_gh <- bpca(gabriel1971,
+              meth='gh',
+              d=1:3,
+              var.rb=TRUE)
+
+qbp_gh <- qbpca(gabriel1971,
+                bp_gh)
+
+plot(qbp_gh,
+     main='gh - 3d \n (whow!)')
 
 devAskNewPage(oask)
 

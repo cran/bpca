@@ -79,9 +79,7 @@ bp2$eigenvectors
 plot(bpca(gabriel1971,
           meth='hj',
           d=3:4),
-     main='hj',
-     xlim=c(-1,1),
-     ylim=c(-1,1))
+     main='hj')
 
 # Interpretation:
 # RUR followed by CRISTIAN contains information dimensions that
@@ -101,7 +99,7 @@ bp3 <- bpca(iris[-5],
             limit=3)
 
 plot(bp3,
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
      var.factor=.3)
 
 bp3$var.rd
@@ -110,11 +108,8 @@ bp3$eigenvectors
 # Graphical diagnostic
 plot(bpca(iris[-5],
           d=3:4),
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-     obj.names=FALSE,
-     var.factor=.6,
-     xlim=c(-2,3),
-     ylim=c(-1,1))
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
+     obj.names=FALSE)
 
 # Interpretation:
 # Sepal.length followed by Petal.Width contains information in dimensions
@@ -131,13 +126,9 @@ bp4 <- bpca(iris[-5],
 
 plot(bp4,
      obj.names=FALSE,
-     obj.pch=c('+', '-', '*')[unclass(iris$Species)],
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-     obj.cex=1,
-     xlim=c(-5,5),
-     ylim=c(-5,5),
-     zlim=c(-5,5),
-     var.factor=.5)
+     obj.pch=c('+', '-', '*')[as.numeric(iris$Species)],
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
+     obj.cex=1)
 
 bp4$var.rd
 bp4$eigenvectors

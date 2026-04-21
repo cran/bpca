@@ -42,23 +42,23 @@ plot(bp1)
 # 1- Avoid to discute it;
 # 2- Consider to incorporate the information with a bpca.3d
 
-bp2 <- bpca(rock,
+bp3 <- bpca(rock,
             d=1:3,
             var.rb=TRUE,
             var.rd=TRUE)
 
-summary(bp2)
+summary(bp3)
 
-plot(bp2)           # Static
+plot(bp3)           # Static
 
-plot(bp2,
+plot(bp3,
      rgl.use=TRUE)  # Dynamic
 
-bp2$var.rd          # Nice!
+bp3$var.rd          # Nice!
 
 # Additional diagnostic
 plot(qbpca(rock,
-           bp2))
+           bp3))
 
 devAskNewPage(oask)
 

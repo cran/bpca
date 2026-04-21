@@ -1,3 +1,4 @@
+# José Cláudio Faria
 bpca.default <- function(x,
                          d=1:2,
                          center=2,

@@ -32,7 +32,7 @@
      ref.lines=TRUE,
      ref.color='navy',
      ref.lty='dotted',
-     var.factor=1,
+     var.factor=NULL,
      var.color='red3',
      var.lty='solid',
      var.pch=20,
@@ -61,7 +61,7 @@
      clear3d=ifelse(rgl.use, TRUE, NULL),
      simple.axes=ifelse(rgl.use, TRUE, NULL),
      aspect=ifelse(rgl.use, c(1, 1, 1), NULL),
-     var.factor=1,
+     var.factor=NULL,
      var.color='red3',
      var.lty=ifelse(rgl.use, NA, 'solid'),
      var.pch=ifelse(rgl.use, NULL, 20),
@@ -252,15 +252,13 @@ bp <- bpca(gabriel1971)
 
 dev.new(w=6, h=6)
 oask <- devAskNewPage(dev.interactive(orNone=TRUE))
-plot(bp,
-     var.factor=2)
+plot(bp)
 
 # Additional graphical parameters (nonsense)
 plot(bpca(gabriel1971,
           meth='sqrt'),
      main='gabriel1971 - sqrt',
      sub='The graphical parameters are working fine!',
-     var.factor=2,
      var.cex=.6,
      var.col=rainbow(9),
      var.pch='v',
@@ -279,7 +277,7 @@ bp <- bpca(gabriel1971,
            d=1:3)
 
 plot(bp,
-     var.factor=3)
+     var.col=rainbow(9))
 
 # Additional graphical parameters (nonsense)
 plot(bpca(gabriel1971,
@@ -287,15 +285,14 @@ plot(bpca(gabriel1971,
           meth='jk'),
      main='gabriel1971 - jk',
      sub='The graphical parameters are working fine!',
-     var.factor=6,
      var.pch='+',
      var.cex=.6,
-     var.col='green4',
+     var.col=rainbow(ncol(gabriel1971)),
      obj.pch='*',
      obj.cex=.8,
-     obj.col=1:8,
-     ref.lty='solid',
-     ref.col='red',
+     obj.col=rainbow(nrow(gabriel1971)),
+     ref.lty='dotted',
+     ref.col=gray(.6),
      angle=70)
 
 ##
@@ -305,8 +302,7 @@ plot(bpca(gabriel1971,
 
 plot(bpca(gabriel1971,
           d=1:3),
-     rgl.use=TRUE,
-     var.factor=2)
+     rgl.use=TRUE)
 
 # Suggestion: Interact with the graphic with the mouse
 # left button: press, maintain and movement it to interactive rotation;
@@ -321,36 +317,34 @@ plot(bpca(gabriel1971,
 
 # 2d
 plot(bpca(iris[-5]),
-     var.factor=.3,
      var.cex=.7,
      obj.names=FALSE,
      obj.cex=1.5,
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-     obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
+     obj.pch=c('+', '*', '-')[as.numeric(iris$Species)])
 
 # 3d static
 plot(bpca(iris[-5],
           d=1:3),
-     var.factor=.2,
      var.color=c('blue', 'red'),
      var.cex=1,
      obj.names=FALSE,
      obj.cex=1,
-     obj.col=c('red', 'green3', 'blue')[unclass(iris$Species)],
-     obj.pch=c('+', '*', '-')[unclass(iris$Species)])
+     obj.col=c('red', 'green3', 'blue')[as.numeric(iris$Species)],
+     obj.pch=c('+', '*', '-')[as.numeric(iris$Species)])
 
 # 3d dynamic
 plot(bpca(iris[-5],
           method='hj',
           d=1:3),
      rgl.use=TRUE,
-     var.col='brown',
-     var.factor=.3,
+     var.col=c('blue', 'red'),
      var.cex=1.2,
      obj.names=FALSE,
      obj.cex=.8,
-     obj.col=c('red', 'green3', 'orange')[unclass(iris$Species)],
-     simple.axes=FALSE, box=TRUE)
+     obj.col=c('red', 'green3', 'orange')[as.numeric(iris$Species)],
+     simple.axes=FALSE,
+     box=TRUE)
 
 ##
 ## Example 5
@@ -451,7 +445,7 @@ plot(bpca(iris[-5]),
      var.id=1,
      var.fac=.3,
      obj.names=FALSE,
-     obj.col=cl[unclass(iris$Species)])
+     obj.col=cl[as.numeric(iris$Species)])
 legend('topleft',
        legend=levels(iris$Species),
        text.col=cl,
