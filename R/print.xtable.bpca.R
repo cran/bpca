@@ -2,31 +2,38 @@
 print.xtable.bpca <- function(x,
                               hline.after=getOption("xtable.hline.after", NULL),
                               include.colnames=getOption("xtable.include.colnames", FALSE),
-                              add.to.row=getOption("xtable.add.to.row", NULL), 
-                              sanitize.text.function=getOption("xtable.sanitize.text.function", NULL), 
+                              add.to.row=getOption("xtable.add.to.row", NULL),
+                              sanitize.text.function=getOption("xtable.sanitize.text.function", NULL),
                               sanitize.rownames.function=getOption("xtable.sanitize.rownames.function", sanitize.text.function),
                               sanitize.colnames.function=getOption("xtable.sanitize.rownames.function", sanitize.text.function), ...)
 {
+  dots <- list(...)
+  type <- if (!is.null(dots$type)) {
+    tolower(as.character(dots$type)[1L])
+  } else {
+    tolower(getOption("xtable.type", "latex"))
+  }
+  html_out <- identical(type, "html")
+
   aux_attr <- attr(x,'align')
   attr(x,'align') <- c('l', aux_attr)
 
-  if(is.null(sanitize.rownames.function)){
-    morerow <- function(x) paste("&",
-                                 x,
-                                 collpase='')
+  ## LaTeX continuation rows use leading "&"; HTML tables do not.
+  if (html_out) {
+    sanitizerownamesfunction <- sanitize.rownames.function
+  } else if (is.null(sanitize.rownames.function)) {
+    morerow <- function(x) paste0("&", x)
     sanitizerownamesfunction <- morerow
-  }else{
-    morerow <- function(x) paste("&",
-                                 sanitize.rownames.function(x),
-                                 collpase='')
+  } else {
+    morerow <- function(x) paste0("&", sanitize.rownames.function(x))
     sanitizerownamesfunction <- morerow
   }
 
-  if(is.null(sanitize.colnames.function)){
+  if (is.null(sanitize.colnames.function)) {
     sanitize.colnames.function <- function(x) x
   }
 
-  if(is.null(add.to.row)){
+  if (is.null(add.to.row)) {
     variables <- rownames(x)[1:(length(rownames(x))-3)]
     nvariables <- length(variables)
     components <- dimnames(x)[[2]]
@@ -45,6 +52,88 @@ print.xtable.bpca <- function(x,
                                sep=""),
                          "",
                          variables)
+
+    if (html_out) {
+      rownames(x) <- c(newvariables,
+                       label_eigenval,
+                       label_variance)
+
+      cn <- paste0(
+        components,
+        " (\u03bb",
+        whatcomponents,
+        "=",
+        round(as.numeric(x[nvariables + 1L, ]),
+              attr(x, "digits")[2]),
+        ")"
+      )
+      colnames(x) <- sanitize.colnames.function(cn)
+
+      ## Omit only the eigenvalues row (values appear in column headings); keep all
+      ## variable rows (LaTeX merges row 1 into \\multirow via add.to.row).
+      xsub <- x[-(nvariables + 1L), , drop = FALSE]
+
+      if (is.null(hline.after)) {
+        ## For HTML, emphasize the header, the split before variance rows,
+        ## and a final line after the last row.
+        hline.after <- c(-1L, 0L, nvariables, nrow(xsub) - 1L)
+      }
+
+      ## Prefer visible column headers for HTML unless the caller set include.colnames.
+      mc <- match.call(expand.dots = TRUE)
+      inc_col <- if ("include.colnames" %in% names(mc)) {
+        include.colnames
+      } else {
+        TRUE
+      }
+
+      dots_pass <- dots[setdiff(names(dots), c("type", "include.colnames"))]
+
+      ## Ensure a stable class hook in html_vignette output.
+      attrs <- dots_pass$html.table.attributes
+      if (is.null(attrs)) {
+        attrs <- 'class="bpca-xtable"'
+      } else if (!grepl("class\\s*=", attrs)) {
+        attrs <- paste(attrs, 'class="bpca-xtable"')
+      } else if (!grepl("bpca-xtable", attrs)) {
+        attrs <- sub("class\\s*=\\s*\"([^\"]*)\"",
+                     'class="\\1 bpca-xtable"',
+                     attrs)
+      }
+      dots_pass$html.table.attributes <- attrs
+
+      ## html_vignette CSS flattens default hline rendering from xtable; add
+      ## explicit rules for the variance split and final table boundary.
+      if (is.null(dots$hline.after)) {
+        row_retained <- nvariables + 2L
+        row_accumulated <- nvariables + 3L
+        cat(sprintf(
+          paste0(
+            "<style>.bpca-xtable tr:nth-child(%d) td{border-top:2px solid #666;}",
+            " .bpca-xtable tr:nth-child(%d) td{border-bottom:2px solid #666;}</style>\n"
+          ),
+          row_retained,
+          row_accumulated
+        ))
+      }
+
+      do.call(
+        xtable::print.xtable,
+        c(
+          list(
+            x = xsub,
+            hline.after = hline.after,
+            include.colnames = inc_col,
+            sanitize.rownames.function = sanitizerownamesfunction,
+            sanitize.colnames.function = sanitize.colnames.function,
+            add.to.row = NULL,
+            type = "html"
+          ),
+          dots_pass
+        )
+      )
+      return(invisible(NULL))
+    }
 
     head1 <- paste("&&\\multicolumn{",
                    ncomponents,
@@ -67,31 +156,22 @@ print.xtable.bpca <- function(x,
                               attr(x,
                                    'digits')[2]),
                         ")$",
-                        sep='')         
+                        sep='')
 
     aux_head23 <- paste(aux_head21,
                         sanitize.colnames.function(aux_head22),
-                        collapse='&') 
+                        collapse='&')
 
     head2 <- paste(aux_head23,
                    "\\\\ \n ",
                    collapse="")
 
-    # A função sanitize.rownames.function deve ser aplicada ao objeto newvariables também!
-    #     aux_com1 <- paste(paste("\\hline \n \\multirow{",
-    #                             nvariables,
-    #                             "}{*}{",
-    #                             sanitize.rownames.function(label_eigenvec),
-    #                             "}",
-    #                             sep=''),
-    #                       newvariables[1],
-    #                       sep='&')
-    label_eigenvec <- ifelse(is.null(sanitize.rownames.function),
-                             label_eigenvec,
-                             label_eigenvec <- sanitize.rownames.function(label_eigenvec))
-    firstvariablerow <-ifelse(is.null(sanitize.rownames.function),
-                              newvariables[1],
-                              firstvariablerow <- sanitize.rownames.function(newvariables[1]))  
+    if (!is.null(sanitize.rownames.function)) {
+      label_eigenvec <- sanitize.rownames.function(label_eigenvec)
+      firstvariablerow <- sanitize.rownames.function(newvariables[1])
+    } else {
+      firstvariablerow <- newvariables[1]
+    }
     aux_com1 <- paste(paste("\\hline \n \\multirow{",
                             nvariables,
                             "}{*}{",
@@ -99,8 +179,8 @@ print.xtable.bpca <- function(x,
                             "}",
                             sep=''),
                       firstvariablerow,
-                      sep='&') 
-    
+                      sep='&')
+
     aux_com11 <- gsub("(&\\s)",
                       "",
                       aux_com1,
@@ -111,11 +191,11 @@ print.xtable.bpca <- function(x,
                       collapse='&')
 
     if(include.colnames){
-      add.to.row <- list(pos=list(0, 0, 0, 0), 
+      add.to.row <- list(pos=list(0, 0, 0, 0),
                          command=NULL)
       aux_head01 <- paste("&",
                           colnames(x))
-      aux_head02 <- paste(aux_head01, 
+      aux_head02 <- paste(aux_head01,
                           collapse="")
       head0 <- paste("&",
                      aux_head02,
@@ -127,9 +207,9 @@ print.xtable.bpca <- function(x,
                    paste(paste(aux_com11,
                                aux_com2,
                                sep='&'),
-                         '\\\\ \n')) 
+                         '\\\\ \n'))
     } else {
-      add.to.row <- list(pos=list(0, 0, 0), 
+      add.to.row <- list(pos=list(0, 0, 0),
                          command=NULL)
       command <- c(head1,
                    head2,
@@ -142,11 +222,11 @@ print.xtable.bpca <- function(x,
     add.to.row$command <- command
   }
 
-  rownames(x) <- c(newvariables, 
-                   label_eigenval, 
+  rownames(x) <- c(newvariables,
+                   label_eigenval,
                    label_variance)
 
-  if(is.null(hline.after)){
+  if (is.null(hline.after)){
 
     hline.after <- c(-1,
                      nrow(x[-c(1,nvariables+1),])-2,
@@ -156,7 +236,7 @@ print.xtable.bpca <- function(x,
 
   print.xtable(x[-c(1,nvariables+1),],
                hline.after=hline.after,
-               include.colnames=FALSE,
+               include.colnames=include.colnames,
                sanitize.rownames.function=sanitizerownamesfunction,
                add.to.row=add.to.row,
                ...)

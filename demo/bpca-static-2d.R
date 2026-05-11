@@ -1,5 +1,5 @@
 ##
-## Computing and plotting a bpca object with 'graphics' package - 2d
+## Static 2D bpca workflow with base graphics
 ##
 
 oask <- devAskNewPage(dev.interactive(orNone=TRUE))
@@ -8,30 +8,30 @@ bp <- bpca(gabriel1971)
 
 plot(bp)
 
-# Exploring the object 'bp' created by the function 'bpca'
+# Explore the object created by bpca()
 class(bp)
 names(bp)
 str(bp)
 
 summary(bp)
 bp$call
-bp$eigenval
-bp$eigenvec
-bp$numb
-bp$import
+bp$eigenvalues
+bp$eigenvectors
+bp$number
+bp$importance
 bp$coord
-bp$coord$obj
-bp$coord$var
+bp$coord$objects
+bp$coord$variables
 bp$var.rb
 bp$var.rd
 
-# Additional graphical parameters (nonsense)
+# Example with customized graphical parameters
 plot(bpca(gabriel1971,
-          meth='sqrt'),
+          method='sqrt'),
      main='gabriel1971 - sqrt',
      sub='The graphical parameters are working fine!',
      var.cex=.6,
-     var.col=rainbow(9),
+     var.color=rainbow(9),
      var.pch='v',
      obj.pch='o',
      obj.cex=.5,

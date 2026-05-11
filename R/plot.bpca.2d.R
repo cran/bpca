@@ -22,8 +22,8 @@ plot.bpca.2d <- function(x,
                          var.color='red3',
                          var.lty='solid',
                          var.pch=20,
-                         var.pos=4,
                          var.cex=.6,
+                         var.pos=NULL,
                          var.offset=.2,
                          obj.factor=1,
                          obj.color='black',
@@ -38,8 +38,8 @@ plot.bpca.2d <- function(x,
 {
   draw.obj <-
     function()
-    {   
-      # objects
+    {
+      # Draw object points and labels.
       if(obj.names) {
         points(x=coobj[,d1],
                y=coobj[,d2],
@@ -65,41 +65,52 @@ plot.bpca.2d <- function(x,
 
   draw.var <-
     function()
-    {
-      # Coordenadas escalonadas
-      vx <- covar[,d1] * var.factor
-      vy <- covar[,d2] * var.factor
+  {
+    # Scaled variable coordinates.
+    vx <- covar[,d1] * var.factor
+    vy <- covar[,d2] * var.factor
 
-      # Desenha os pontos (pontas dos vetores)
-      points(x=vx,
-             y=vy,
-             pch=var.pch,
-             col=var.color,
-             cex=var.cex, ...)
+    # Draw variable endpoints.
+    points(x=vx,
+           y=vy,
+           pch=var.pch,
+           col=var.color,
+           cex=var.cex, ...)
 
-      # Desenha os textos com ajuste radial e folga (offset)
-      for (i in 1:nrow(covar)) {
-        # 1. Determina o ajuste (0 = esquerda, 1 = direita)
+    # Recycle manual positions when provided.
+    v_pos <- if(!is.null(var.pos)) rep(var.pos, length.out=nrow(covar)) else NULL
+
+    # Draw variable labels.
+    for (i in seq_len(nrow(covar))) {
+      if (is.null(v_pos)) {
+        # Automatic radial placement.
         adj.x <- ifelse(vx[i] >= 0, 0, 1)
-
-        # 2. Cria a folga baseada no var.offset e no sinal da coordenada
-        # Dividimos por um fator (ex: 10 ou 20) para a folga ser proporcional
         off.x <- sign(vx[i]) * (var.offset * 0.2)
         off.y <- sign(vy[i]) * (var.offset * 0.2)
 
         text(x=vx[i] + off.x,
              y=vy[i] + off.y,
              labels=rownames(covar)[i],
-             adj=c(adj.x, 0.5), # 0.5 centraliza o texto verticalmente na ponta
+             adj=c(adj.x, 0.5),
+             col=var.color,
+             cex=var.cex, ...)
+      } else {
+        # Manual placement (R `pos` handles offset).
+        text(x=vx[i],
+             y=vy[i],
+             labels=rownames(covar)[i],
+             pos=v_pos[i],
+             offset=var.offset, # O R base usa esse offset com 'pos'
              col=var.color,
              cex=var.cex, ...)
       }
     }
+  }
 
   draw.var.seg <-
     function()
     {   
-      # var segments
+      # Draw variable vectors.
       segments(x0=0,
                y0=0,
                x1=covar[,d1] * var.factor,
@@ -111,8 +122,8 @@ plot.bpca.2d <- function(x,
   draw.circles <-
     function()
     {  
-      # concentric circles (0,0)
-      for (i in 1:c.number)
+      # Draw concentric circles centered at origin.
+      for (i in seq_len(c.number))
         symbols(x=0,
                 y=0,
                 circles=c.radio * i * var.factor,
@@ -122,16 +133,69 @@ plot.bpca.2d <- function(x,
                 lwd=c.lwd, ...)
     }
 
+  draw.axis.cross <-
+    function(vx, vy, color, lty)
+    {
+      abline(a=0,
+             b=vy / vx,
+             col=color,
+             lty=lty, ...)
+
+      abline(a=0,
+             b=-vx / vy,
+             col=color,
+             lty=lty, ...)
+    }
+
+  proj.on.direction <-
+    function(points, direction)
+    {
+      dot_pd <- as.numeric(points %*% as.numeric(direction))
+      dot_dd <- as.numeric(direction %*% as.numeric(direction))
+      scale <- dot_pd / dot_dd
+      cbind(scale * direction[1], scale * direction[2])
+    }
+
+  solve.orthogonal.intersection <-
+    function(px, py, ax, ay)
+    {
+      solve(matrix(c(-ay, ax, ax, ay), nrow=2),
+            matrix(c(0, ay * py + ax * px), ncol=1))
+    }
+
+  draw.circles.at <-
+    function(cx, cy, scale=1)
+    {
+      for (i in seq_len(c.number))
+        symbols(x=cx,
+                y=cy,
+                circles=c.radio * i * scale,
+                add=TRUE,
+                inches=FALSE,
+                fg=c.color,
+                lwd=c.lwd, ...)
+    }
+
   if (!inherits(x, 'bpca.2d'))
     stop("Use this function only with 'bpca.2d' class!")
+
+  if (length(x$number) < 2)
+    stop("'x$number' must contain at least two dimensions.")
 
   coobj <- x$coord$objects
   covar <- x$coord$variables
   d1 <- x$number[1]
   d2 <- x$number[2]
 
-  if (is.null(var.factor))
-    var.factor <- max(abs(coobj)) / max(abs(covar))
+  if (nrow(coobj) == 0 || nrow(covar) == 0)
+    stop("Both objects and variables coordinates must have at least one row.")
+
+  if (is.null(var.factor)) {
+    max_covar <- max(abs(covar), na.rm=TRUE)
+    if (!is.finite(max_covar) || max_covar == 0)
+      stop("Cannot compute 'var.factor' automatically: variable coordinates are all zero or non-finite.")
+    var.factor <- max(abs(coobj), na.rm=TRUE) / max_covar
+  }
 
   scores <- rbind(coobj,
                   covar * var.factor)
@@ -139,24 +203,13 @@ plot.bpca.2d <- function(x,
   if (missing(obj.labels))
     obj.labels <- rownames(coobj)
 
-#  if (missing(xlim) || missing(ylim)) {
-#    ms <- max(abs(scores)) * 1.1
-#    msp <- c(-ms, ms)
-#  }
-#
-#  if (missing(xlim))
-#    xlim <- msp
-#  if (missing(ylim))
-#    ylim <- msp
-
-  # Calculo automatico de xlim e ylim se nao fornecidos
+  # Automatic limits when xlim/ylim are missing.
   if (missing(xlim) || missing(ylim)) {
-    # Extrai ranges atuais
+    # Current ranges.
     rx <- range(scores[, d1], na.rm=TRUE)
     ry <- range(scores[, d2], na.rm=TRUE)
 
-    # Buffer proporcional ao cex e ao tamanho do grafico (ajustavel)
-    # 15% de folga costuma acomodar bem os textos laterais
+    # Proportional buffer for better label fit.
     buffer_x <- diff(rx) * (max(var.cex, obj.cex) * 0.20)
     buffer_y <- diff(ry) * (max(var.cex, obj.cex) * 0.20)
 
@@ -197,25 +250,25 @@ plot.bpca.2d <- function(x,
            lty=ref.lty, ...)
 
   switch(match.arg(type), 
-         bp={ # basic biplot 2d
+         bp={ # basic 2d biplot
            draw.obj()
            draw.var()
            draw.var.seg()
 
-           # identification of objects with mouse
+           # Identify objects with mouse click.
            if(obj.identify)
              identify(x=coobj,
                       labels=obj.labels,
                       cex=obj.cex)
          }, 
-         eo={ # evaluate an object
-           if (any(class(obj.id) == c('numeric', 'integer'))) 
+         eo={ # evaluate one object
+           if (any(class(obj.id) == c('numeric', 'integer')))
              obj.lab <- obj.labels[obj.id[1]]
            else {
              if (obj.id %in% obj.labels){
-               obj.lab <- obj.labels[match(obj.id, 
-                                           obj.labels)] 
-               obj.id <- match(obj.id, 
+               obj.lab <- obj.labels[match(obj.id,
+                                           obj.labels)]
+               obj.id <- match(obj.id,
                                obj.labels)
              }
              else
@@ -224,16 +277,13 @@ plot.bpca.2d <- function(x,
 
            draw.var()
 
-           abline(a=0,
-                  b=coobj[obj.id,d2] / coobj[obj.id,d1],
-                  col=base.color,
-                  lty=base.lty, ...)
+           # Projection axis and orthogonal axis.
+           draw.axis.cross(vx=coobj[obj.id, d1],
+                           vy=coobj[obj.id, d2],
+                           color=base.color,
+                           lty=base.lty)
 
-           abline(a=0,
-                  b=-coobj[obj.id,d1] / coobj[obj.id,d2],
-                  col=base.color,
-                  lty=base.lty, ...)
-
+           # Draw selected object vector.
            arrows(x0=0,
                   y0=0,
                   x1=coobj[obj.id[1],d1] * obj.factor,
@@ -249,8 +299,7 @@ plot.bpca.2d <- function(x,
                   col=obj.color,
                   cex=obj.cex, ...)
 
-
-           text(x=coobj[obj.id[1],d1] * obj.factor, 
+           text(x=coobj[obj.id[1],d1] * obj.factor,
                 y=coobj[obj.id[1],d2] * obj.factor,
                 labels=obj.lab,
                 pos=obj.pos,
@@ -258,32 +307,32 @@ plot.bpca.2d <- function(x,
                 col=obj.color,
                 cex=obj.cex, ...)
 
-           x <- solve(cbind(c(-coobj[obj.id[1],d2],
-                              coobj[obj.id[1],d1]),
-                            c(coobj[obj.id[1],d1],
-                              coobj[obj.id[1],d2])),
-                      rbind(0,
-                            as.numeric(covar[,c(d1, d2)] %*%
-                                       coobj[obj.id[1],c(d1, d2)])))
-           segments(x0=covar[,d1],
-                    y0=covar[,d2],
-                    x1=x[1,],
-                    y1=x[2,],
+           # Orthogonal projection of scaled variables.
+           # 1) Scaled variable endpoints.
+           v_esc <- covar[, c(d1, d2)] * var.factor
+
+           # 2) Object coordinates (axis direction).
+           o_dir <- coobj[obj.id[1], c(d1, d2)]
+
+           # 3) Orthogonal projection: P = (V . O / O . O) * O.
+           proj <- proj.on.direction(points=v_esc,
+                                     direction=o_dir)
+
+           # 4) Draw projection segments.
+           segments(x0=v_esc[,1],
+                    y0=v_esc[,2],
+                    x1=proj[,1],
+                    y1=proj[,2],
                     lty=proj.lty,
                     col=proj.color)
          }, 
-         ev={ # evaluate a variable
+         ev={ # evaluate one variable
            draw.obj()
 
-           abline(a=0,
-                  b=covar[var.id,d2] / covar[var.id,d1],
-                  col=base.color,
-                  lty=base.lty, ...)
-
-           abline(a=0,
-                  b=-covar[var.id,d1] / covar[var.id,d2],
-                  col=base.color,
-                  lty=base.lty, ...)
+           draw.axis.cross(vx=covar[var.id, d1],
+                           vy=covar[var.id, d2],
+                           color=base.color,
+                           lty=base.lty)
 
            arrows(x0=0,
                   y0=0,
@@ -303,7 +352,6 @@ plot.bpca.2d <- function(x,
            text(x=covar[var.id,d1] * var.factor,
                 y=covar[var.id,d2] * var.factor,
                 labels=ifelse(mode(var.id) == 'numeric', rownames(covar)[var.id], var.id), 
-                pos=var.pos,
                 offset=var.offset,
                 col=var.color,
                 cex=var.cex, ...)
@@ -372,7 +420,7 @@ plot.bpca.2d <- function(x,
            draw.var.seg()
            draw.circles()
          }, 
-         ww={ ## which won where/what (from 1.0-1)
+         ww={ # which won where/what
            draw.obj()
            draw.var()
 
@@ -443,7 +491,7 @@ plot.bpca.2d <- function(x,
                     col=base.color,
                     lty=base.lty, ...)
          }, 
-         dv={ # discrimitiveness vs. representativeness
+         dv={ # discriminativeness vs. representativeness
            draw.obj()
            draw.var()
            draw.circles()
@@ -469,19 +517,14 @@ plot.bpca.2d <- function(x,
                   col=var.color,
                   lty=base.lty, ...)                                                 
          }, 
-         ms={ # means vs. stability
+         ms={ # means vs stability
            m1 <- mean(covar[,d1] * var.factor)
            m2 <- mean(covar[,d2] * var.factor)        
 
-           abline(a=0,
-                  b=m2 / m1,
-                  col=base.color,
-                  lty=base.lty, ...)
-
-           abline(a=0,
-                  b=-m1/m2,
-                  col=base.color,
-                  lty=base.lty, ...)
+           draw.axis.cross(vx=m1,
+                           vy=m2,
+                           color=base.color,
+                           lty=base.lty)
 
            arrows(x0=0,
                   y0=0,
@@ -495,26 +538,15 @@ plot.bpca.2d <- function(x,
            draw.obj()
            draw.var()
 
-           for (i in 1:c.number)
-             symbols(x=m1,
-                     y=m2,
-                     circles=c.radio * i * var.factor,
-                     add=TRUE,
-                     inches=FALSE,
-                     fg=c.color,
-                     lwd=c.lwd, ...)
+           draw.circles.at(cx=m1,
+                           cy=m2,
+                           scale=var.factor)
 
-           for (i in 1:nrow(coobj))
-           {
-             x <- solve(matrix(c(-m2, 
-                                 m1, 
-                                 m1, 
-                                 m2),
-                               nrow=2),
-                        matrix(c(0, 
-                                 m2 * coobj[i,d2] +
-                                   m1 * coobj[i,d1]),
-                               ncol=1))
+           for (i in seq_len(nrow(coobj))) {
+             x <- solve.orthogonal.intersection(px=coobj[i, d1],
+                                                py=coobj[i, d2],
+                                                ax=m1,
+                                                ay=m2)
 
              segments(x0=coobj[i,d1],
                       y0=coobj[i,d2],
@@ -522,21 +554,16 @@ plot.bpca.2d <- function(x,
                       y1=x[2],
                       col=proj.color,
                       lty=proj.lty, ...)
-           }                        
+           }
          }, 
-         ro={ # rank objects with ref. to the ideal variable
+         ro={ # rank objects with reference to ideal variable
            m1 <- mean(covar[,d1])
            m2 <- mean(covar[,d2])
 
-           abline(a=0,
-                  b=m2 / m1,
-                  col=base.color,
-                  lty=base.lty, ...)
-
-           abline(a=0,
-                  b=-m1 / m2,
-                  col=base.color,
-                  lty=base.lty, ...)
+           draw.axis.cross(vx=m1,
+                           vy=m2,
+                           color=base.color,
+                           lty=base.lty)
 
            draw.obj()
            draw.var()
@@ -544,19 +571,13 @@ plot.bpca.2d <- function(x,
            cox <- 0
            coy <- 0
 
-           for (i in 1:nrow(coobj))
-           {
-             x <- solve(matrix(c(-m2, 
-                                 m1, 
-                                 m1, 
-                                 m2),
-                               nrow=2),
-                        matrix(c(0, 
-                                 m2 * coobj[i,d2] + m1 * coobj[i,d1]),
-                               ncol=1))
+           for (i in seq_len(nrow(coobj))) {
+             x <- solve.orthogonal.intersection(px=coobj[i, d1],
+                                                py=coobj[i, d2],
+                                                ax=m1,
+                                                ay=m2)
              if (sign(x[1]) == sign(m1))
-               if(abs(x[1]) > abs(cox))
-               {
+               if(abs(x[1]) > abs(cox)) {
                  cox <- x[1]
                  coy <- x[2]
                }
@@ -571,31 +592,20 @@ plot.bpca.2d <- function(x,
                   lwd=a.lwd,
                   length=a.length, ...)
 
-           for (i in 1:c.number)
-             symbols(x=cox,
-                     y=coy,
-                     circles=c.radio * i,
-                     add=TRUE,
-                     inches=FALSE,
-                     fg=c.color, 
-                     lwd=c.lwd, ...)
+           draw.circles.at(cx=cox,
+                           cy=coy)
          }, 
-         rv={ # rank variables with ref. to the ideal object
+         rv={ # rank variables with reference to ideal object
            draw.obj()
            draw.var()
 
            m1 <- mean(covar[,d1])
            m2 <- mean(covar[,d2])
 
-           abline(a=0,
-                  b=m2 / m1,
-                  col=var.color,
-                  lty="solid", ...)
-
-           abline(a=0,
-                  b=-m1 / m2,
-                  col=var.color,
-                  lty="solid", ...)
+           draw.axis.cross(vx=m1,
+                           vy=m2,
+                           color=var.color,
+                           lty='solid')
 
            symbols(x=m1,
                    y=m2,
@@ -618,13 +628,7 @@ plot.bpca.2d <- function(x,
                   lwd=a.lwd,
                   length=a.length, ...)
 
-           for (i in 1:c.number)
-             symbols(x=cox,
-                     y=coy,
-                     circles=c.radio*i,
-                     add=TRUE,
-                     inches=FALSE,
-                     fg=c.color, 
-                     lwd=c.lwd, ...)
+           draw.circles.at(cx=cox,
+                           cy=coy)
          })
 }  

@@ -1,3 +1,7 @@
+##
+## Diagnostic workflow for var.rd using the rock dataset
+##
+
 oask <- devAskNewPage(dev.interactive(orNone=TRUE))
 
 bp <- bpca(rock,
@@ -13,7 +17,7 @@ plot(bp)
 bp$var.rd
 
 # It is possible to observe that the variable 'perm'
-# has not a good representation (bpca.2d)!
+# does not have good representation in 2D (bpca.2d).
 
 # Observed correlations:
 cor(rock)
@@ -23,7 +27,8 @@ bp$var.rb
 
 # Additional diagnostic
 plot(qbpca(rock,
-           bp))
+           bp),
+     highlight.width=0.2)
 
 # This variable remains as important in a dimension not contemplated
 # by the biplot reduction (PC3):
@@ -37,10 +42,9 @@ summary(bp1)
 
 plot(bp1)
 
-# The recommendation, knowing that this variable has a poor
-# representation is:
-# 1- Avoid to discute it;
-# 2- Consider to incorporate the information with a bpca.3d
+# Since this variable has poor representation in 2D, the recommendation is:
+# 1- Avoid discussing it;
+# 2- Consider incorporating that information with a 3D biplot (bpca.3d).
 
 bp3 <- bpca(rock,
             d=1:3,
@@ -58,7 +62,8 @@ bp3$var.rd          # Nice!
 
 # Additional diagnostic
 plot(qbpca(rock,
-           bp3))
+           bp3),
+     highlight.width=0.2)
 
 devAskNewPage(oask)
 
