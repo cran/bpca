@@ -1,8 +1,9 @@
 Package: bpca
-Version: 1.4-3
-Date: 2026-05-11
+Version: 1.5-0
+Date: 2026-05-25
 Title: Biplot Analysis for Multivariate Data Using Principal Components
-Authors@R: c(person("José C.", "Faria", role = c("aut", "cre"), email = "joseclaudio.faria@gmail.com"),
+Authors@R: c(person("José C.", "Faria", role = c("aut", "cre"),
+               email = "joseclaudio.faria@gmail.com"),
              person("Ivan B.", "Allaman", role = "aut"),
              person("Clarice G. B.", "Demétrio", role = "aut"))
 Maintainer: José C. Faria <joseclaudio.faria@gmail.com>
@@ -20,9 +21,9 @@ BugReports: https://github.com/jcfaria/bpca/issues
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: no
-Packaged: 2026-05-11 15:17:30 UTC; jcfaria
+Packaged: 2026-05-25 16:33:37 UTC; jcfaria
 Author: José C. Faria [aut, cre],
   Ivan B. Allaman [aut],
   Clarice G. B. Demétrio [aut]
 Repository: CRAN
-Date/Publication: 2026-05-11 20:20:02 UTC
+Date/Publication: 2026-05-25 17:30:02 UTC

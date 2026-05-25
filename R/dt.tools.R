@@ -1,61 +1,59 @@
 # José Cláudio Faria
 dt.tools <- function(x,
-                     center=2,
-                     scale=TRUE)
-{
+                     center = 2,
+                     scale = TRUE) {
   stopifnot(is.matrix(x) || is.data.frame(x))
-  if (!is.numeric(center) || length(center) != 1 || !(center %in% 0:3))
+  if (!is.numeric(center) || length(center) != 1 || !(center %in% 0:3)) {
     stop("'center' must be one of 0, 1, 2, or 3.")
-
-  bCol <- sapply(x,
-                 is.numeric)
-
-  x <- as.matrix(x[,bCol])
-
-  n <- ncol(x)
-  if (n < 2 )
-    stop('x has less than two columns (variables)!')
-
-  switch(center,                                     # of course, if center=1:3
-         x <- sweep(x, 1, mean(x)),                  # 1: row mean centering
-         x <- sweep(x, 2, apply(x, 2, mean)),        # 2: column mean centering
-         x <- sweep(sweep(x, 1, apply(x, 1, mean)),  # 3: double-centering
-                    2, apply(x, 2, mean)) + mean(x))
-
-  if(scale) {
-    sds <- apply(x, 2, sd)
-    sds[sds == 0] <- 1
-    x <- sweep(x, 2, sds, '/')
-  } else
-    x <- x
-
-  lv <- function(x) sqrt(t(x) %*% x)  # length of vector
-  l  <- apply(x,
-              2,
-              lv)
-  r  <- diag(n)
-
-  for (i in seq_len(n - 1)) {
-    for (j in (i + 1):n) {
-      cost <- (t(x[,i]) %*%
-               x[,j]) /
-      (l[i] * l[j])
-
-    r[j,i] <- cost    # fill lower.tri
-    r[i,j] <- r[j,i]  # fill upper.tri
-    }
   }
 
-  a <- acos(r) * 180 / pi
+  bCol <- sapply(
+    x,
+    is.numeric
+  )
 
-  dimnames(r) <- list(colnames(x),
-                      colnames(x))
+  x <- as.matrix(x[, bCol])
+
+  n <- ncol(x)
+  if (n < 2) {
+    stop("x has less than two columns (variables)!")
+  }
+
+  # Centring and scaling delegated to the shared helper (.center_scale),
+  # eliminating duplication with bpca.default().
+  x <- .center_scale(
+    x,
+    center,
+    scale
+  )
+
+  # Cosine matrix via the shared helper (.cosine_matrix).
+  # dt.tools operates on columns, so x is transposed so that .cosine_matrix
+  # computes cosines between columns of x (= rows of t(x)).
+  r <- .cosine_matrix(t(x))
+
+  dimnames(r) <- list(
+    colnames(x),
+    colnames(x)
+  )
+
+  # Angle between column vectors (in degrees).
+  a <- acos(r) * 180 / pi
 
   dimnames(a) <- dimnames(r)
 
-  res <- list(length=l,
-              angle=a,
-              r=r)
+  # L2 norm of each column (vector length in the object space).
+  l <- apply(
+    x,
+    2,
+    function(v) sqrt(crossprod(v))
+  )
+
+  res <- list(
+    length = l,
+    angle = a,
+    r = r
+  )
 
   invisible(res)
 }
